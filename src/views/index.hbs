@@ -1,0 +1,56 @@
+<div class="card">
+
+    <div class="card-header bg-dark">
+        <h3 class="card-title text-white">
+            <i class="far fa-image"></i> Carga una Imagen
+        </h3>
+    </div>
+
+    <div class="card-body">
+        <form action="/images" method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" name="image" id="inputGroup" class="custom-file-input"
+                            aria-describedby="inputGroupFileAddon" required>
+                        <label for="inputGroup" class="custom-file-label">Escoge tu archivo</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="title" class="form-control" placeholder="Titulo de Imagen" required>
+            </div>
+
+            <div class="form-group">
+                <textarea name="description"  cols="2" class="form-control" placeholder="Descripcion de la Imagen" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-success">
+                <i class="fa fa-upload"></i> Subir Imagen
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-dark ">
+        <h3 style="color:white"><i class="far fa-images"></i> Últimas Imágenes</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            {{#each images}}
+                <div class="col-md-4 mt-2">
+                    <a href="/images/{{uniqueId}}">
+                        <img src="../public/upload/{{filename}}" alt="" class="w-100 h-100 img-thumbail">
+                    </a>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+
