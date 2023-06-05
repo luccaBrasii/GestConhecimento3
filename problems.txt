@@ -1,0 +1,20 @@
+*PROBLEMAS:
+
+*05/06:
+    Implementar a função 'slv.js' em POSTAGEM CONTROLLER, para salvar a imagem no banco de dados como binário, depois jogar para uma rota de ID unico
+    e então puxar a imagem para o front-end;
+
+-----------------------------
+*ATT:
+
+*05/06:
+    Hoje refiz a aplicação pois não estava recebendo Imagens estáticas no Front Handlebars + express.
+
+    App passou a receber arquivos tipo JPG, PNG, salva localmente em 'src/public/uploads' e manda o SRC para o banco de dados..
+    onde é feita a requisição pelo front-end em <img src='SRC DO BD'>;
+
+    Também retirei o SLUG para ser feito manualmente pelo usuario, agora a aplicação cria o SLUG sozinho;
+
+    Criei uma função para salvar a imagem no BD como 'BinData', joga para URL onde pode ser feita a requisição, falta implementar no controller
+    PS: a função está em slv.js e o 'GET' em index.js principal..
+-------------------------

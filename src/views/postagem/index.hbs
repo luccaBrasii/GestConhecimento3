@@ -1,0 +1,18 @@
+<div class="card">
+    <div class="card-body">
+        <h1>{{postagem.titulo}}</h1>
+        <hr>
+        <small>Data de publicação: {{postagem.data}}</small>
+        <hr>
+        <p>{{postagem.conteudo}}</p>
+        <hr>
+        
+
+
+        {{#if postagem.img}}
+            <h3>Arquivos: </h3>
+            <img src="../../public/upload/{{postagem.img}}" style="width: 100px;">
+        {{else}}
+        {{/if}}
+    </div>
+</div>

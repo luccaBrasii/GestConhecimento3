@@ -1,0 +1,37 @@
+{{#each erros}}
+        <div class="alert alert-danger">{{texto}}</div>
+    {{else}}    
+{{/each}}
+
+<div class="text-center">
+    <div class="card">
+        <div class="card-body">
+            <main class="form-signin">
+                <form method="post">
+
+                    <h1 class="h3 mb-3 fw-normal">Registrar</h1>
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control mt-3" id="floatingInput" placeholder="nome" name="nome">
+                        <label for="floatingInput">Nome</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="email" class="form-control mt-3" id="floatingInput" placeholder="name@example.com" name="email">
+                        <label for="floatingInput">Email</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" class="form-control mt-3" id="floatingPassword" placeholder="Password" name="senha">
+                        <label for="floatingPassword">Senha</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" class="form-control mt-3" id="floatingPassword" placeholder="Password" name="senha2">
+                        <label for="floatingPassword">Confirmar Senha</label>
+                    </div>
+
+                    <button class="w-100 btn btn-lg btn-success mt-3" type="submit">Criar conta</button>
+
+                </form>
+            </main>
+        </div>
+    </div>
+</div>

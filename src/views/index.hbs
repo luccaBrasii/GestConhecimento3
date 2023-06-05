@@ -1,56 +1,34 @@
-<div class="card">
-
-    <div class="card-header bg-dark">
-        <h3 class="card-title text-white">
-            <i class="far fa-image"></i> Carga una Imagen
-        </h3>
-    </div>
-
-    <div class="card-body">
-        <form action="/images" method="POST" enctype="multipart/form-data">
-
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="custom-file">
-                        <input type="file" name="image" id="inputGroup" class="custom-file-input"
-                            aria-describedby="inputGroupFileAddon" required>
-                        <label for="inputGroup" class="custom-file-label">Escoge tu archivo</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <input type="text" name="title" class="form-control" placeholder="Titulo de Imagen" required>
-            </div>
-
-            <div class="form-group">
-                <textarea name="description"  cols="2" class="form-control" placeholder="Descripcion de la Imagen" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <button class="btn btn-success">
-                <i class="fa fa-upload"></i> Subir Imagen
-                </button>
-            </div>
-
-        </form>
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-6 fw-bold">Gest. Conhecimento</h1>
+        <!--SÓ APARECE SE O USUARIO ESTIVER DESLOGADO // ESSA VARIAVEL USER VEM LA VARIAVEL GLOBAL FLASH USER-->
+        {{#if user}}
+        <h2>Seja bem vindo {{user.nome}}</h2>
+        {{else}}
+        {{/if}}
+        <p class="col-md-8 fs-5">Um sistema de blog simples com Node e MongoDB</p>
+        <a href="/login"><button class="btn btn-primary btn-lg" type="button">Login</button></a>
     </div>
 </div>
+<h3>Postagens recentes:</h3>
+<img src="/imagem/647e2e4d02b98b1700d6a641">
+<hr>
 
-<div class="card">
-    <div class="card-header bg-dark ">
-        <h3 style="color:white"><i class="far fa-images"></i> Últimas Imágenes</h3>
-    </div>
+{{#each postagens}}
+
+<div class="card mt-4">
     <div class="card-body">
-        <div class="row">
-            {{#each images}}
-                <div class="col-md-4 mt-2">
-                    <a href="/images/{{uniqueId}}">
-                        <img src="../public/upload/{{filename}}" alt="" class="w-100 h-100 img-thumbail">
-                    </a>
-                </div>
-            {{/each}}
-        </div>
+        <h4>{{titulo}}</h4>
+        <p> {{descricao}}</p>
+        <a href="/postagem/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
+        <hr>
+        <small><strong>Data:</strong> {{data}}</small><br>
+        <small><strong>Categoria:</strong> {{categoria.nome}}</small><br>
+        <small><strong>Autor:</strong> {{autor}}</strong></small>
     </div>
 </div>
+{{else}}
+
+<h5>Nenhum post registrado!</h5>
+{{/each}}
 
