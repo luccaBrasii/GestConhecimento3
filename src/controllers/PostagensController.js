@@ -1,6 +1,7 @@
 //CARREGANDO SCHEMAS
     const Categoria = require('../models/Categoria')
     const Postagens = require('../models/Postagens')
+    const Imagem = require('../models/Imagem')
 //OUTROS CONTROLLADORES
     const ImagemController = require('./ImagemController')
 
@@ -58,7 +59,7 @@
                             var newPost; 
                             const file = req.file
                             if(file){
-                                 
+                                const imgId = await ImagemController.Salve(file.filename);
                                 var newPost = {
                                     titulo: req.body.titulo,
                                     slug: `${Date.now()}+${req.body.titulo.trim()}`,
@@ -66,20 +67,17 @@
                                     conteudo: req.body.conteudo,
                                     categoria: req.body.categoria,
                                     autor: req.user.nome,
-                                    img: file.filename
-                                }
-                            }else{
-                                var newPost = {
-                                    titulo: req.body.titulo,
-                                    slug: `${Date.now()}+${req.body.titulo.trim()}`,
-                                    descricao: req.body.descricao,
-                                    conteudo: req.body.conteudo,
-                                    categoria: req.body.categoria,
-                                    autor: req.user.nome
-                                }
-                            }
-                            
-
+                                    img: imgId
+                                    }
+                                }else{
+                                    var newPost = {
+                                        titulo: req.body.titulo,
+                                        slug: `${Date.now()}+${req.body.titulo.trim()}`,
+                                        descricao: req.body.descricao,
+                                        conteudo: req.body.conteudo,
+                                        categoria: req.body.categoria,
+                                        autor: req.user.nome
+                                    }}
                             
 
                             await new Postagens(newPost).save().then(()=>{
@@ -91,9 +89,6 @@
                                 res.redirect('/postagens')
                             })
                         }
-                    
-                    
-
             } 
 
         //Renderiza o formulário de edição das postagens
@@ -125,11 +120,6 @@
                         req.flash("error_msg", 'Insira um titulo válido!')
                         res.redirect(`/postagens/edit/${req.body.id}`)
 
-                    }else if(!req.body.slug || typeof req.body.slug  === 'undefined' || req.body.slug  === null){
-
-                        req.flash("error_msg", 'Insira um slug válido!')
-                        res.redirect(`/postagens/edit/${req.body.id}`)
-
                     }else if(!req.body.descricao || typeof req.body.descricao  === 'undefined' || req.body.descricao  === null){
 
                         req.flash("error_msg", 'Insira um descricao válido!')
@@ -143,30 +133,55 @@
                     }else{
                 //SE PASSAR DAS VALIDAÇÕES..
                         await Postagens.findOne({_id: req.body.id}).then((postagens)=>{
-                            
+
+                            //VE SE TEM ARQUIVO NA REQUISIÇÃO
+
                                 const file = req.file
                                 if(file){
-                                    postagens.img = file.filename
+                                //SE TIVER ARQUIVO USA A FUNÇÃO SALVE PARA SALVAR O ARQUIVO NO BANCO DE DADOS E RETORNA O ID DO ARQUIVO
+                                    ImagemController.Salve(file.filename).then((imgId) => {
+                                        console.log('LOG: ' + imgId)
+                                        postagens.img = imgId
+                                        postagens.titulo = req.body.titulo
+                                        postagens.slug = `${Date.now()}+${req.body.titulo.trim()}`
+                                        postagens.descricao = req.body.descricao
+                                        postagens.conteudo = req.body.conteudo
+                                        postagens.categoria = req.body.categoria
+                                        postagens.data = Date.now()
+                                        postagens.autor = req.user.nome
+                                        
+                                //SALVA O DOCUMENTO
+                                        postagens.save().then(()=>{
+                                            req.flash("success_msg", "Postagem editada com sucesso !")
+                                            res.redirect('/postagens')
+                                        }).catch((err)=>{
+                                            console.log("ERRO: "+err);
+                                            req.flash("error", "Falha ao salvar a postagem!")
+                                            res.redirect('/postagens')
+                                        })
+                                    })
+                                }else{
+                                        postagens.titulo = req.body.titulo
+                                        postagens.slug = `${Date.now()}+${req.body.titulo.trim()}`
+                                        postagens.descricao = req.body.descricao
+                                        postagens.conteudo = req.body.conteudo
+                                        postagens.categoria = req.body.categoria
+                                        postagens.data = Date.now()
+                                        postagens.autor = req.user.nome
+
+                                        postagens.save().then(()=>{
+                                            req.flash("success_msg", "Postagem editada com sucesso !")
+                                            res.redirect('/postagens')
+                                        }).catch((err)=>{
+                                            console.log("ERRO: "+err);
+                                            req.flash("error", "Falha ao salvar a postagem!")
+                                            res.redirect('/postagens')
+                                        })
                                 }
                                 
                                 
-                            
-                                postagens.titulo = req.body.titulo
-                                postagens.slug = req.body.slug
-                                postagens.descricao = req.body.descricao
-                                postagens.conteudo = req.body.conteudo
-                                postagens.categoria = req.body.categoria
-                                postagens.data = Date.now()
-                                postagens.autor = req.user.nome
 
-                            postagens.save().then(()=>{
-                                req.flash("success_msg", "Postagem editada com sucesso !")
-                                res.redirect('/postagens')
-                            }).catch((err)=>{
-                                console.log("ERRO: "+err);
-                                req.flash("error", "Falha ao salvar a postagem!")
-                                res.redirect('/postagens')
-                            })
+                            
                         })
                     }
 
@@ -176,8 +191,14 @@
         //DELETE POSTAGEM
             static async deletePost(req, res){
                 await Postagens.findOneAndRemove({_id: req.body.id}).then(()=>{
-                    req.flash("success_msg","Post apagado com sucesso!")
-                    res.redirect('/postagens')
+                    Imagem.findOneAndRemove({_id: req.body.img}).then(()=>{
+                        req.flash("success_msg","Post apagado com sucesso!")
+                        res.redirect('/postagens')
+                    }).catch((err)=>{
+                        req.flash("error_msg","Houve um erro ao deletar! (img nao encontrada)")
+                        res.redirect('/postagens')
+                    })
+                    
             }).catch((err)=>{
                     console.log(err);
                     req.flash("error_msg","Houve um erro ao deletar!")

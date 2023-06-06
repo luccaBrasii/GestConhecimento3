@@ -5,7 +5,7 @@
 
 
 {{#each postagens}}
-
+ 
     <div class="card mt-4">
         <div class="card-body">
             <h4>{{titulo}}</h4>
@@ -16,6 +16,7 @@
             <a href="/postagens/edit/{{_id}}"><button class="btn btn-success mt-3">Editar Postagem</button></a>
             <form action="/postagens/delete" method="post">
                 <input type="hidden" name="id" value="{{_id}}">
+                <input type="hidden" name="img" value="{{img}}">
                 <button type="submit" class="btn btn-danger mt-2">Apagar Post</button>
             </form>
         </div>

@@ -11,7 +11,12 @@
 
         {{#if postagem.img}}
             <h3>Arquivos: </h3>
-            <img src="../../public/upload/{{postagem.img}}" style="width: 100px;">
+
+            <img src="/imagem/{{postagem.img}}" style="width: 100px;">
+            <!--
+                SE USAR A PASTA UPLOADS USAR ESSE COD PARA PEGAR A IMAGEM
+                <img src="../../public/upload/{{postagem.img}}" style="width: 100px;">
+            -->
         {{else}}
         {{/if}}
     </div>

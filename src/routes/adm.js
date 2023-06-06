@@ -6,6 +6,7 @@
     const CategoriaController = require('../controllers/CategoriaController')
     const PostagensController = require('../controllers/PostagensController')
     const RotasController = require('../controllers/RotasController')
+    const ImagemController = require('../controllers/ImagemController')
 
 //MIDDLEWARE
     const {middleware} = require('../helpers/middleware')
@@ -60,14 +61,21 @@ module.exports = app => {
                 app.get('/postagens/add',middleware, PostagensController.buscaCategoria)
             
             //Cria o post
+            //middleware upload comentado para nao salvar os arquivos localmente, se quiser que salve local só descomentar
                 app.post('/postagens/add', middleware, upload.single("file"), PostagensController.criaPost)
 
             //Renderiza o 'EDIT POSTS'
                 app.get('/postagens/edit/:id',middleware, PostagensController.renderizaForm)
 
             //Rota de edição
-                app.post('/postagens/edit',middleware,upload.single("file"), PostagensController.updatePost)
+                //middleware upload comentado para nao salvar os arquivos localmente, se quiser que salve local só descomentar
+                app.post('/postagens/edit',middleware, upload.single("file"), PostagensController.updatePost)
 
             //DELETE POST
                 app.post('/postagens/delete',middleware, PostagensController.deletePost)
+
+    //ROTAS DE ARQUIVOS
+            
+        //RENDERIZA AS IMAGENS EM UMA ROTA COM BASE NO ID
+            app.get('/imagem/:id', ImagemController.renderizaIMG)
 }
