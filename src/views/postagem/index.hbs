@@ -1,3 +1,5 @@
+<script src="./helper.js"></script>
+
 <div class="card">
     <div class="card-body">
         <h1>{{postagem.titulo}}</h1>
@@ -7,16 +9,25 @@
         <p>{{postagem.conteudo}}</p>
         <hr>
         
-
-
-        {{#if postagem.img}}
+    
+        
+        {{#if (eq postagem.img.tipo 'img')}}
             <h3>Arquivos: </h3>
 
-            <img src="/imagem/{{postagem.img}}" style="width: 100px;">
+            <img src="/imagem/{{postagem.img.id}}" style="width: 100px;">
             <!--
                 SE USAR A PASTA UPLOADS USAR ESSE COD PARA PEGAR A IMAGEM
-                <img src="../../public/upload/{{postagem.img}}" style="width: 100px;">
+                <img src="../../public/upload/" style="width: 100px;">
             -->
+        {{else}}
+        {{/if}}
+
+
+        {{#if (eq postagem.img.tipo 'pdf')}}
+            <h3>Arquivos: </h3>
+
+            <embed src="/pdf/{{postagem.img.id}}" type="application/pdf" width="100%" height="500px" />
+
         {{else}}
         {{/if}}
     </div>

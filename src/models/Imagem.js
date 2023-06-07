@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const imagemSchema = new mongoose.Schema({
+  tipo: String,
   dados: Buffer
 });
 

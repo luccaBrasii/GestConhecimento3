@@ -21,7 +21,7 @@ const Postagens = require('../models/Postagens')
         
         //PARA BUSCAR UMA POSTAGEM E EXIBIR UMA ROTA UNICA P/ CADA
             static async postUnico (req,res){
-                Postagens.findOne({slug: req.params.slug}).then((postagem)=>{
+                Postagens.findOne({slug: req.params.slug}).populate('img').then((postagem)=>{
                     if(postagem){
                         res.render('postagem/index', {postagem: postagem})
                     }else{

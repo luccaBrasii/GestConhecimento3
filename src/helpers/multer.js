@@ -2,18 +2,43 @@ const multer = require("multer");
 const path = require("path");
 const fs = require('fs')
 
-//SALVA OS ARQUIVOS NA PASTA UPLOADS DA PASTA PUBLIC
-    const storage = multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../public/upload'));
-      },
-      filename: function (req, file, cb) {
-        const time = Date.now()
-        cb(null, `${time}_${path.extname(file.originalname)}`);
-      },
-    });
+const uploadDirectory = path.join(__dirname, "../public/upload");
+const imageDirectory = path.join(uploadDirectory, "images");
+const pdfDirectory = path.join(uploadDirectory, "pdf");
+const otherDirectory = path.join(uploadDirectory, "other");
 
-    const upload = multer({ storage: storage });
+// Verifica se os diretórios existem e cria-os, se necessário
+  fs.existsSync(uploadDirectory) || fs.mkdirSync(uploadDirectory);
+  fs.existsSync(imageDirectory) || fs.mkdirSync(imageDirectory);
+  fs.existsSync(pdfDirectory) || fs.mkdirSync(pdfDirectory);
+  fs.existsSync(otherDirectory) || fs.mkdirSync(otherDirectory);
+
+
+
+//SALVA OS ARQUIVOS NA PASTA UPLOADS DA PASTA PUBLIC COM BASE NO FORMATO DO ARQUIVO
+// 
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      let folder = "";
+
+      // Verifica o tipo de arquivo e define a pasta de destino correspondente
+      if (file.mimetype.startsWith("image/")) {
+        folder = "images";
+      } else if (file.mimetype === "application/pdf") {
+        folder = "pdf";
+      } else {
+        folder = "other";
+      }
+
+      cb(null, path.join(uploadDirectory, folder));
+    },
+    filename: function (req, file, cb) {
+      const time = Date.now();
+      cb(null, `${time}_${path.extname(file.originalname)}`);
+    },
+  });
+
+const upload = multer({ storage: storage });
 
 //FUNÇÃO PARA LIMPAR OS ARQUIVOS DA PASTA UPLOADS DEPOIS DE 24H
 

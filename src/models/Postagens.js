@@ -32,8 +32,8 @@ const Postagem = new Schema({
         required: true
     },
     img:{
-        type:String, 
-        default: null
+        type: Schema.Types.ObjectId,
+        ref: 'Imagem'
     }
 })
 

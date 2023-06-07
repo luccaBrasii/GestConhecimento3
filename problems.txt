@@ -3,7 +3,8 @@
 *05/06:
     RESOLVIDO: Implementar a função 'slv.js' em POSTAGEM CONTROLLER, para salvar a imagem no banco de dados como binário, depois jogar para uma rota de ID unico
     e então puxar a imagem para o front-end;
-
+*07/06:
+    IDEIA: RECEBER ARQUIVOS TIPO AUDIO DE WHATSAPP .OGG
 -----------------------------
 *ATT:
 
@@ -24,3 +25,19 @@
     -Refiz o 'addPostagens' e 'updatePost' do PostagensController junto com a função 'Salvar' do ImagemController;
 
     -Adicionei uma função em 'helpers' no 'multer.js' para limpar os arquivos da pasta 'uploads' depois de 24h para nao sobrecarregar o servidor;
+-------------------------
+*07/06
+    -Alterei o ImagemController para DocsController, agora ele lida com pdf e imagens. Também criei uma rota para renderizar os pdf salvos no BD.
+
+    -Alterei o 'helpers/multer.js', agora ele nao salva somente na pasta 'uploads', verifica se existe as pastas 'images, pdf e others' se nao tiver as cria,
+     quando o arquivo é recebido pelo servidor ele verifica atraves de uma função qual o tipo de arquivo e salva na pasta correspondente.
+
+    -Alterações no BD: o model 'posts' agora no campo 'img' nao recebe somente uma string, recebe uma chave estrangeira da 'Collection' 'Imagem';
+     A Collection 'Imagem' agora recebe um novo campo, o 'tipo' que por enquanto pode ser 'img' ou 'pdf'.
+
+    -Criei uma nova função no helpers, o 'helpersHandlebars.js' para comparar 2 valores.
+    
+    -Essa nova função é usada no 'views/postagem/index.hbs' para ver se o tipo de arquivo é 'img' se for renderiza a tag img, se for tipo 'pdf' ele 
+     renderiza o pdf
+
+-----------------------------
