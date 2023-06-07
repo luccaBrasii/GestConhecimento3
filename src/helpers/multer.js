@@ -5,13 +5,16 @@ const fs = require('fs')
 const uploadDirectory = path.join(__dirname, "../public/upload");
 const imageDirectory = path.join(uploadDirectory, "images");
 const pdfDirectory = path.join(uploadDirectory, "pdf");
+const wordDirectory = path.join(uploadDirectory, "word");
 const otherDirectory = path.join(uploadDirectory, "other");
 
 // Verifica se os diretórios existem e cria-os, se necessário
   fs.existsSync(uploadDirectory) || fs.mkdirSync(uploadDirectory);
   fs.existsSync(imageDirectory) || fs.mkdirSync(imageDirectory);
   fs.existsSync(pdfDirectory) || fs.mkdirSync(pdfDirectory);
+  fs.existsSync(wordDirectory) || fs.mkdirSync(wordDirectory);
   fs.existsSync(otherDirectory) || fs.mkdirSync(otherDirectory);
+
 
 
 
@@ -26,6 +29,8 @@ const otherDirectory = path.join(uploadDirectory, "other");
         folder = "images";
       } else if (file.mimetype === "application/pdf") {
         folder = "pdf";
+      }else if (file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimetype === "application/msword") {
+        folder = "word";
       } else {
         folder = "other";
       }

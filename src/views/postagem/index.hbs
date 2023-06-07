@@ -1,5 +1,3 @@
-<script src="./helper.js"></script>
-
 <div class="card">
     <div class="card-body">
         <h1>{{postagem.titulo}}</h1>
@@ -27,6 +25,15 @@
             <h3>Arquivos: </h3>
 
             <embed src="/pdf/{{postagem.img.id}}" type="application/pdf" width="100%" height="500px" />
+
+        {{else}}
+        {{/if}}
+
+        {{#if (eq postagem.img.tipo 'word')}}
+            <h3>Arquivos: </h3>
+
+            <a href="/download/{{postagem.img.id}}">Baixar arquivo</a>
+
 
         {{else}}
         {{/if}}

@@ -82,4 +82,7 @@ module.exports = app => {
 
     //RENDERIZA O PDF EM UMA ROTA COM BASE NO ID
     app.get('/pdf/:id', ImagemController.renderizaPDF)
+
+    //ROTA DE DOWNLOAD
+    app.get('/download/:id', ImagemController.downloadDOCX)
 }

@@ -36,8 +36,10 @@
      A Collection 'Imagem' agora recebe um novo campo, o 'tipo' que por enquanto pode ser 'img' ou 'pdf'.
 
     -Criei uma nova função no helpers, o 'helpersHandlebars.js' para comparar 2 valores.
-    
+
     -Essa nova função é usada no 'views/postagem/index.hbs' para ver se o tipo de arquivo é 'img' se for renderiza a tag img, se for tipo 'pdf' ele 
-     renderiza o pdf
+     renderiza o pdf.
+    
+    -Adionei o método 'dowloadDOCX' ao DocsController para baixar os arquivos WORD diretamente de uma rota.
 
 -----------------------------

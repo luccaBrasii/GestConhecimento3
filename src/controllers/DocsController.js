@@ -24,6 +24,12 @@ class DocsController{
             ) {
               filePath = path.join(__dirname, '../public/upload/images', name);
               tipo = 'img';
+            }else if (
+              fileExtension === '.doc' ||
+              fileExtension === '.docx'
+            ) {
+              filePath = path.join(__dirname, '../public/upload/word', name);
+              tipo = 'word';
             } else {
               filePath = path.join(__dirname, '../public/upload/other', name);
               tipo = 'outros';
@@ -63,22 +69,45 @@ class DocsController{
           }
 
     //RENDERIZA O PDF 
-      static async renderizaPDF(req, res) {
-        const imagemId = req.params.id;
-      
-        Imagem.findById(imagemId, (err, imagem) => {
-          if (err) {
-            console.error('Erro ao buscar a imagem:', err);
-            res.status(500).send('Erro ao buscar a imagem');
-          } else if (!imagem) {
-            res.status(404).send('Imagem não encontrada');
-          } else {
-            res.set('Content-Type', 'application/pdf');
-            res.send(imagem.dados);
+        static async renderizaPDF(req, res) {
+          const imagemId = req.params.id;
+        
+          Imagem.findById(imagemId, (err, imagem) => {
+            if (err) {
+              console.error('Erro ao buscar a imagem:', err);
+              res.status(500).send('Erro ao buscar a imagem');
+            } else if (!imagem) {
+              res.status(404).send('Imagem não encontrada');
+            } else {
+              res.set('Content-Type', 'application/pdf');
+              res.send(imagem.dados);
+            }
+          });
+        }
+
+    //ROTA DE DOWNLOAD PARA DOCUMENTOS TIPO WORD OUTROS ARQUIVOS
+        static async downloadDOCX(req, res){
+          
+          try {
+            const id = req.params.id;
+            const documento = await Imagem.findById(id); // Consulte o documento pelo ID no seu banco de dados
+        
+            if (!documento) {
+              return res.status(404).send('Documento não encontrado');
+            }
+        
+            const fileData = documento.dados; // Obtenha os dados do arquivo BinData do documento
+        
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.setHeader('Content-Disposition', 'attachment; filename="nome-do-arquivo.docx"');
+            res.send(fileData); // Envie os dados do arquivo como resposta
+          } catch (err) {
+            console.error(err);
+            res.status(500).send('Erro ao baixar o arquivo');
           }
-        });
-      }
+        }
 }
+
     
     
 
