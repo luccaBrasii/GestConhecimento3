@@ -1,7 +1,7 @@
 //CARREGANDO SCHEMAS
 const Categoria = require('../models/Categoria')
 const Postagens = require('../models/Postagens')
-const Imagem = require('../models/Imagem')
+const Documentos = require('../models/Documentos')
 //OUTROS CONTROLLADORES
 const DocsController = require('../controllers/DocsController')
 
@@ -192,7 +192,7 @@ class PostagensController {
     //DELETE POSTAGEM
     static async deletePost(req, res) {
         await Postagens.findOneAndRemove({ _id: req.body.id }).then(() => {
-            Imagem.findOneAndRemove({ _id: req.body.img }).then(() => {
+            Documentos.findOneAndRemove({ _id: req.body.img }).then(() => {
                 req.flash("success_msg", "Post apagado com sucesso!")
                 res.redirect('/postagens')
             }).catch((err) => {

@@ -6,13 +6,17 @@ const uploadDirectory = path.join(__dirname, "../public/upload");
 const imageDirectory = path.join(uploadDirectory, "images");
 const pdfDirectory = path.join(uploadDirectory, "pdf");
 const wordDirectory = path.join(uploadDirectory, "word");
+const audioDirectory = path.join(uploadDirectory, "audio");
 const otherDirectory = path.join(uploadDirectory, "other");
+
+const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory, audioDirectory, otherDirectory]
 
 // Verifica se os diretórios existem e cria-os, se necessário
   fs.existsSync(uploadDirectory) || fs.mkdirSync(uploadDirectory);
   fs.existsSync(imageDirectory) || fs.mkdirSync(imageDirectory);
   fs.existsSync(pdfDirectory) || fs.mkdirSync(pdfDirectory);
   fs.existsSync(wordDirectory) || fs.mkdirSync(wordDirectory);
+  fs.existsSync(audioDirectory) || fs.mkdirSync(audioDirectory);
   fs.existsSync(otherDirectory) || fs.mkdirSync(otherDirectory);
 
 
@@ -31,7 +35,10 @@ const otherDirectory = path.join(uploadDirectory, "other");
         folder = "pdf";
       }else if (file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimetype === "application/msword") {
         folder = "word";
-      } else {
+      }else if (file.mimetype.startsWith("audio/")){
+        folder = "audio";
+      }
+       else {
         folder = "other";
       }
 
@@ -48,7 +55,10 @@ const upload = multer({ storage: storage });
 //FUNÇÃO PARA LIMPAR OS ARQUIVOS DA PASTA UPLOADS DEPOIS DE 24H
 
     function limparPastaUpload(limite) {
-      const diretorioUpload = path.join(__dirname, '../public/upload');
+
+      for(i=0; i < diretorios.length; i++){
+
+        const diretorioUpload = path.join(diretorios[i]);
 
       fs.readdir(diretorioUpload, (err, files) => {
         if (err) {
@@ -82,6 +92,8 @@ const upload = multer({ storage: storage });
           });
         });
       });
+      }
+      
     }
 
 // Executa a limpeza da pasta upload a cada 24 horas (86400000 milissegundos)
@@ -89,7 +101,6 @@ const upload = multer({ storage: storage });
       const limiteExclusao = 86400000; // 24 horas em milissegundos
       limparPastaUpload(limiteExclusao);
     }, 86400000);
-
 
 //EXPORTA O MIDDLEWARE
   module.exports = upload;

@@ -12,7 +12,7 @@
     const passport = require('passport')
     require('./helpers/auth')(passport)
     const morgan = require('morgan');
-
+    const mongoose = require('mongoose')
     const PORT = process.env.PORT || 3000;
 
 //CONFIG
@@ -67,9 +67,10 @@
         RoutesUsuario(app)
 
 //Inicia o Servidor
-    async function startServer() {
+    async function startServer(){
+        
+        //await mongoose.connect("mongodb://localhost/bancoTeste")
         await connectDB()
-
         app.listen(PORT, () => {
             console.log("http://localhost:3000/");
         })}

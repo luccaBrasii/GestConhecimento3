@@ -43,3 +43,8 @@
     -Adionei o método 'dowloadDOCX' ao DocsController para baixar os arquivos WORD diretamente de uma rota.
 
 -----------------------------
+*10/06
+    -Atualizei o Multer, DocsController e criei uma rota para receber audios, 'mp3, wav e ogg'.
+    -Audios agora sao salvos na nova pasta 'audio' em upload e salva no banco de dados com a tipo: 'audio';
+    -Atualizei a função para apagar os arquivos locais depois de 24h, agora ela percorre todas as pastas de 'uploads' e exclui seus arquivos;
+    

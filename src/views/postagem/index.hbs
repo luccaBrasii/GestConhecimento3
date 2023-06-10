@@ -31,10 +31,20 @@
 
         {{#if (eq postagem.img.tipo 'word')}}
             <h3>Arquivos: </h3>
+            <h5>Arquivo Word: </h5>
 
-            <a href="/download/{{postagem.img.id}}">Baixar arquivo</a>
+            <a href="/download/{{postagem.img.id}}"><small>{{postagem.img.nome}}</small></a>
 
+        {{else}}
+        {{/if}}
 
+        {{#if (eq postagem.img.tipo 'audio')}}
+            <h3>Arquivos: <small>audio</small></h3>
+            
+            <audio controls>
+                <source src="/audio/{{postagem.img.id}}" type="audio/mp3">
+                Seu navegador não suporta a tag de áudio.
+            </audio>
         {{else}}
         {{/if}}
     </div>

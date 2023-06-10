@@ -33,7 +33,7 @@ const Postagem = new Schema({
     },
     img:{
         type: Schema.Types.ObjectId,
-        ref: 'Imagem'
+        ref: 'Documentos'
     }
 })
 

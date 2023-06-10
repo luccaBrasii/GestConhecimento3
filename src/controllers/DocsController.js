@@ -1,5 +1,5 @@
 //CARREGANDO SCHEMA
-    const Imagem = require('../models/Imagem')
+    const Documentos = require('../models/Documentos')
 //MODULOS
     const fs = require('fs')
     const path = require("path");
@@ -7,12 +7,13 @@
 class DocsController{
 
     //SALVA O DOCUMENTO NO BANCO DE DADOS
-
         static async Salve(name) {
           return new Promise((resolve, reject) => {
+          
             const fileExtension = path.extname(name).toLowerCase();
             let filePath = '';
             let tipo = '';
+          //Verifica o tipo de arquivo e busca na pasta especifica
             if (fileExtension === '.pdf') {
               filePath = path.join(__dirname, '../public/upload/pdf', name);
               tipo = 'pdf';
@@ -30,15 +31,26 @@ class DocsController{
             ) {
               filePath = path.join(__dirname, '../public/upload/word', name);
               tipo = 'word';
-            } else {
+            }else if (
+              fileExtension === '.mp3' ||
+              fileExtension === '.wav' ||
+              fileExtension === '.ogg'
+            ){
+              filePath = path.join(__dirname, '../public/upload/audio', name);
+              tipo = 'audio';
+            }else {
               filePath = path.join(__dirname, '../public/upload/other', name);
               tipo = 'outros';
             }
             
             const img = fs.readFileSync(filePath);
-            const novaImagem = new Imagem({ tipo: tipo, dados: img });
+            const novoDocumento = new Documentos({
+              nome:name,
+              tipo: tipo,
+              dados: img 
+            });
         
-            novaImagem
+            novoDocumento
               .save()
               .then((img) => {
                 resolve(img.id); // Resolve a Promise com o ID da imagem
@@ -50,12 +62,11 @@ class DocsController{
           });
         }
 
-        
     //ROTA API QUE MOSTRA A IMAGEM COM BASE NO ID
         static async renderizaIMG(req, res) {
-            const imagemId = req.params.id;
+            const DocID = req.params.id;
           
-            Imagem.findById(imagemId, (err, imagem) => {
+            Documentos.findById(DocID, (err, imagem) => {
               if (err) {
                 console.error('Erro ao buscar a imagem:', err);
                 res.status(500).send('Erro ao buscar a imagem');
@@ -70,17 +81,17 @@ class DocsController{
 
     //RENDERIZA O PDF 
         static async renderizaPDF(req, res) {
-          const imagemId = req.params.id;
+          const DocID = req.params.id;
         
-          Imagem.findById(imagemId, (err, imagem) => {
+          Documentos.findById(DocID, (err, documento) => {
             if (err) {
               console.error('Erro ao buscar a imagem:', err);
               res.status(500).send('Erro ao buscar a imagem');
-            } else if (!imagem) {
+            } else if (!documento) {
               res.status(404).send('Imagem não encontrada');
             } else {
               res.set('Content-Type', 'application/pdf');
-              res.send(imagem.dados);
+              res.send(documento.dados);
             }
           });
         }
@@ -90,22 +101,41 @@ class DocsController{
           
           try {
             const id = req.params.id;
-            const documento = await Imagem.findById(id); // Consulte o documento pelo ID no seu banco de dados
+            const documento = await Documentos.findById(id); // Consulta o documento pelo ID
         
             if (!documento) {
               return res.status(404).send('Documento não encontrado');
             }
         
-            const fileData = documento.dados; // Obtenha os dados do arquivo BinData do documento
+            const fileData = documento.dados; // Obtem os dados BinData do documento
         
             res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-            res.setHeader('Content-Disposition', 'attachment; filename="nome-do-arquivo.docx"');
-            res.send(fileData); // Envie os dados do arquivo como resposta
+            res.setHeader('Content-Disposition', `attachment; filename="${documento.nome}.docx"`);
+            res.send(fileData); // Envia os dados do arquivo como resposta
           } catch (err) {
             console.error(err);
             res.status(500).send('Erro ao baixar o arquivo');
           }
         }
+
+    //RENDERIZA AUDIO
+      static async renderizaAudio(req, res) {
+        const audioID = req.params.id;
+      
+        Documentos.findById(audioID, (err, documento) => {
+          if (err) {
+            console.error('Erro ao buscar o áudio:', err);
+            res.status(500).send('Erro ao buscar o áudio');
+          } else if (!documento) {
+            res.status(404).send('Áudio não encontrado');
+          } else {
+            res.set('Content-Type', 'audio/mp3');
+            res.send(documento.dados);
+          }
+        });
+      }
+    
+
 }
 
     
