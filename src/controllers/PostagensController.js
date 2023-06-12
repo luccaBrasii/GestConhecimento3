@@ -56,41 +56,46 @@ class PostagensController {
         }
         //SE PASSAR DAS VALIDAÇÕES..
         else {
-            var newPost;
-            const file = req.file
-            if (file) {
-                const imgId = await DocsController.Salve(file.filename);
-                var newPost = {
-                    titulo: req.body.titulo,
-                    slug: `${Date.now()}+${req.body.titulo.trim()}`,
-                    descricao: req.body.descricao,
-                    conteudo: req.body.conteudo,
-                    categoria: req.body.categoria,
-                    autor: req.user.nome,
-                    img: imgId
-                }
-            } else {
-                var newPost = {
-                    titulo: req.body.titulo,
-                    slug: `${Date.now()}+${req.body.titulo.trim()}`,
-                    descricao: req.body.descricao,
-                    conteudo: req.body.conteudo,
-                    categoria: req.body.categoria,
-                    autor: req.user.nome
-                }
-            }
+            const files = req.files; // Obtém os arquivos enviados
+            console.log(files)
+    // Verifique se há arquivos enviados
+    if (files) {
+      // Crie um objeto vazio para armazenar os dados dos arquivos
+      const fileIds = [];
 
+      // Itera sobre cada arquivo recebido
+      for (const file of files) {
+        const fileId = await DocsController.Salve(file.filename); // Salve o arquivo e obtenha o ID retornado
+        fileIds.push(fileId); // Adicione o ID do arquivo ao array fileIds
+      }
 
-            await new Postagens(newPost).save().then(() => {
-                req.flash('success_msg', "Postagem criada com sucesso!")
-                res.redirect('/postagens')
-            }).catch((err) => {
-                console.log("ERRO!: " + err);
-                req.flash('error_msg', 'Houve um erro durante o salvamento da postagem!')
-                res.redirect('/postagens')
-            })
-        }
+      // Crie o objeto newPost com base nos dados enviados e adicione os IDs dos arquivos ao campo imgs
+      const newPost = {
+        titulo: req.body.titulo,
+        slug: `${Date.now()}+${req.body.titulo.trim()}`,
+        descricao: req.body.descricao,
+        conteudo: req.body.conteudo,
+        categoria: req.body.categoria,
+        autor: req.user.nome,
+        img: fileIds // Adicione o array fileIds ao campo imgs
+      };
+      console.log(newPost)
+      // Salve o novo post no banco de dados
+      await new Postagens(newPost)
+        .save()
+        .then(() => {
+          req.flash('success_msg', "Postagem criada com sucesso!")
+          res.redirect('/postagens')
+        })
+        .catch((err) => {
+          console.log("ERRO!: " + err);
+          req.flash('error_msg', 'Houve um erro durante o salvamento da postagem!')
+          res.redirect('/postagens')
+        });
     }
+  }
+        }
+    
 
     //Renderiza o formulário de edição das postagens
     static async renderizaForm(req, res) {

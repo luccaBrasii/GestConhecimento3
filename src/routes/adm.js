@@ -62,7 +62,7 @@ module.exports = app => {
 
     //Cria o post
     //middleware upload comentado para nao salvar os arquivos localmente, se quiser que salve local só descomentar
-        app.post('/postagens/add', middleware, upload.single("file"), PostagensController.criaPost)
+        app.post('/postagens/add', middleware, upload.array("file"), PostagensController.criaPost)
 
 
     //Renderiza o 'EDIT POSTS'

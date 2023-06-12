@@ -31,10 +31,12 @@ const Postagem = new Schema({
         type: String,
         required: true
     },
-    img:{
-        type: Schema.Types.ObjectId,
-        ref: 'Documentos'
-    }
+    img: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Documentos'
+        }
+      ]
 })
 
 const Post = mongoose.model('postagens', Postagem)

@@ -7,45 +7,48 @@
         <p>{{postagem.conteudo}}</p>
         <hr>
         
-    
         
-        {{#if (eq postagem.img.tipo 'img')}}
-            <h3>Arquivos: </h3>
+        {{#each postagem.img}}
+    <!--SE FOR IMAGEM-->
 
-            <img src="/imagem/{{postagem.img.id}}" style="width: 100px;">
-            <!--
-                SE USAR A PASTA UPLOADS USAR ESSE COD PARA PEGAR A IMAGEM
-                <img src="../../public/upload/" style="width: 100px;">
-            -->
-        {{else}}
+            {{#if (eq this.tipo 'img') }}
+                <img src="/imagem/{{this.id}}" style="width: 100px;">
+            {{else}}
+
+    <!--SE FOR PDF-->
+
+            {{#if (eq this.tipo 'pdf')}}
+                <h3>Arquivos: </h3>
+                <embed src="/pdf/{{this.id}}" type="application/pdf" width="100%" height="500px" />
+            {{else}}
+
+    <!--SE FOR DOCX-->
+
+            {{#if (eq this.tipo 'word')}}
+                <h5>Arquivo Word: </h5>
+
+                <a href="/download/{{this.id}}"><small>{{this.nome}}</small></a>
+            {{else}}
+
+    <!--SE FOR AUDIO-->
+    
+            {{#if (eq this.tipo 'audio')}}
+                <h3>Arquivos: <small>audio</small></h3>
+                <audio controls>
+                    <source src="/audio/{{this.id}}" type="audio/mp3">
+                    Seu navegador não suporta a tag de áudio.
+                </audio>
+            {{else}}
+
+
+
+            {{/if}}
+            {{/if}}
+            {{/if}}
         {{/if}}
+        {{/each}}
+        
 
-
-        {{#if (eq postagem.img.tipo 'pdf')}}
-            <h3>Arquivos: </h3>
-
-            <embed src="/pdf/{{postagem.img.id}}" type="application/pdf" width="100%" height="500px" />
-
-        {{else}}
-        {{/if}}
-
-        {{#if (eq postagem.img.tipo 'word')}}
-            <h3>Arquivos: </h3>
-            <h5>Arquivo Word: </h5>
-
-            <a href="/download/{{postagem.img.id}}"><small>{{postagem.img.nome}}</small></a>
-
-        {{else}}
-        {{/if}}
-
-        {{#if (eq postagem.img.tipo 'audio')}}
-            <h3>Arquivos: <small>audio</small></h3>
-            
-            <audio controls>
-                <source src="/audio/{{postagem.img.id}}" type="audio/mp3">
-                Seu navegador não suporta a tag de áudio.
-            </audio>
-        {{else}}
-        {{/if}}
+        
     </div>
 </div>

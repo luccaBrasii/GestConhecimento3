@@ -46,7 +46,7 @@ const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory
     },
     filename: function (req, file, cb) {
       const time = Date.now();
-      cb(null, `${time}_${path.extname(file.originalname)}`);
+      cb(null, `${time}_${file.originalname}`);
     },
   });
 
