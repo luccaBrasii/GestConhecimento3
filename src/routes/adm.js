@@ -70,7 +70,7 @@ module.exports = app => {
 
     //Rota de edição
     //middleware upload comentado para nao salvar os arquivos localmente, se quiser que salve local só descomentar
-        app.post('/postagens/edit', middleware, upload.single("file"), PostagensController.updatePost)
+        app.post('/postagens/edit', middleware, upload.array("file"), PostagensController.updatePost)
 
     //DELETE POST
         app.post('/postagens/delete', middleware, PostagensController.deletePost)

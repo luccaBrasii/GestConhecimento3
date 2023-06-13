@@ -7,37 +7,41 @@
         <p>{{postagem.conteudo}}</p>
         <hr>
         
+        {{#if postagem.img}}
+            <h3>Arquivos: </h3>
+        {{else}}
+        {{/if}}
         
         {{#each postagem.img}}
     <!--SE FOR IMAGEM-->
-
+            
             {{#if (eq this.tipo 'img') }}
-                <img src="/imagem/{{this.id}}" style="width: 100px;">
+                <img src="/imagem/{{this.id}}" style="width: 100px;"><br>
             {{else}}
 
     <!--SE FOR PDF-->
 
             {{#if (eq this.tipo 'pdf')}}
-                <h3>Arquivos: </h3>
-                <embed src="/pdf/{{this.id}}" type="application/pdf" width="100%" height="500px" />
+                
+                <embed src="/pdf/{{this.id}}" type="application/pdf" width="100%" height="500px" /><br>
             {{else}}
 
     <!--SE FOR DOCX-->
 
             {{#if (eq this.tipo 'word')}}
-                <h5>Arquivo Word: </h5>
+                
 
-                <a href="/download/{{this.id}}"><small>{{this.nome}}</small></a>
+                <a href="/download/{{this.id}}"><small>{{this.nome}}</small></a><br>
             {{else}}
 
     <!--SE FOR AUDIO-->
     
             {{#if (eq this.tipo 'audio')}}
-                <h3>Arquivos: <small>audio</small></h3>
                 <audio controls>
+                    <h3>{{this.nome}}</h3>
                     <source src="/audio/{{this.id}}" type="audio/mp3">
                     Seu navegador não suporta a tag de áudio.
-                </audio>
+                </audio><br>
             {{else}}
 
 
@@ -45,10 +49,11 @@
             {{/if}}
             {{/if}}
             {{/if}}
-        {{/if}}
+            {{/if}}
         {{/each}}
         
 
         
     </div>
 </div>
+

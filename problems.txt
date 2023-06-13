@@ -55,3 +55,10 @@
      esse Array contém as informações de 'ID' dos documentos para conseguir puxar pela API.
 
      obs: atualizar a funçao AttPosts para receber vários arquivos..
+
+*13/06
+    -Atualizei o input de files para um input multiplo para selecionar varios arquivos.
+    -Atualizei o DeletePosts para deletar todos os arquivos inseridos, pois antes só deletava o primeiro..
+    -Atualizei o método AttPosts, agora ele recebe varios arquivos e sobrescreve os que ja existiam antes, além de apagar os antigos docs do BD;
+
+    obs: att o AttPosts para nao sobrescrever os arquivos
