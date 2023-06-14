@@ -8,3 +8,8 @@ Handlebars.registerHelper("eq", function (a, b) {
     }
     
   });
+
+  Handlebars.registerHelper("findNome", function (a, separador) {
+    var array = a.split(separador);
+    return array[1]
+  })

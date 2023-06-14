@@ -133,13 +133,22 @@ class DocsController{
             res.send(documento.dados);
           }
         });
-      }
-    
+        }
+
+      static async deleteDoc(req,res){
+        await Documentos.findOneAndRemove({ _id: req.params.id }).then(() => {
+          req.flash("success_msg", "Post apagado com sucesso!");
+          res.redirect('/')
+          }).catch((err)=>{
+            console.log('ERRO: '+ err);
+          })
+        }
+
 
 }
-
     
     
 
 
 module.exports = DocsController
+

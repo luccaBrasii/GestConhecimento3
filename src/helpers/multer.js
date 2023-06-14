@@ -104,3 +104,5 @@ const upload = multer({ storage: storage });
 
 //EXPORTA O MIDDLEWARE
   module.exports = upload;
+
+  

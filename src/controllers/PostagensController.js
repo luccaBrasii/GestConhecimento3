@@ -100,7 +100,7 @@ class PostagensController {
     //Renderiza o formulário de edição das postagens
     static async renderizaForm(req, res) {
 
-        await Postagens.findOne({ _id: req.params.id }).then((postagem) => { //Renderiza os inputs do form
+        await Postagens.findOne({ _id: req.params.id }).populate('img').then((postagem) => { //Renderiza os inputs do form
 
             Categoria.find().then((categorias) => { //Renderiza as categorias
                 res.render("admin/editPostagens", { categorias: categorias, postagem: postagem })
@@ -146,7 +146,7 @@ class PostagensController {
                 
                 if (files) {
                 //PEGA TODOS OS IDS DOS DOCUMENTOS EXISTENTES NESSE POST
-                  const imageIds = req.body.img.split(',')
+                  const imageIds = req.body.img
                 //DELETA OS DOCS ANTIGOS
                   //await Documentos.deleteMany({ _id: { $in: imageIds } })
                   const filePromises = []; // Array para armazenar as Promises
@@ -166,7 +166,7 @@ class PostagensController {
                     postagens.categoria = req.body.categoria;
                     postagens.data = Date.now();
                     postagens.autor = req.user.nome;
-                    postagens.img = fileIds;
+                    postagens.img = imageIds.concat(fileIds);
               
                     postagens
                       .save()

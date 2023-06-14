@@ -1,4 +1,5 @@
 <!--Se existir erros exibe a mensagem que vem do backend-->
+
 {{#each erros}}
 <div class="alert alert-danger">{{texto}}</div>
 {{else}}
@@ -19,9 +20,66 @@
             <p>Conteudo:</p>
             <textarea name="conteudo" class="form-control">{{postagem.conteudo}}</textarea>
             <br>
-            <label>Imagem: </label>
-            <input type="file" placeholder="Descricao" name="file" class="form-control" multiple>
+            
+
+            <div>
+                <h2>DOCS:</h2>
+                <a href="#" id="exibeDocs">Exibir documentos..</a>
+                <div class="documentos" style="display: none;">
+                
+                <h4>Adicionar novos documentos: </h4>
+                    <input type="file" placeholder="Descricao" name="file" class="form-control" multiple>
+                <br>
+            {{#each postagem.img}}
+
+            
+
+                <!--SE FOR IMAGEM-->
+                    {{#if (eq this.tipo 'img') }}
+                        <h5>{{findNome this.nome '_'}}</h5>
+                        <img src="/imagem/{{this.id}}" style="width: 100px;"><br>
+                        <input type="hidden" name="img" value="{{this.id}}">
+                    {{else}}
+
+                <!--SE FOR PDF-->
+
+                    {{#if (eq this.tipo 'pdf')}}
+                        <h5>{{findNome this.nome '_'}}</h5>
+                        <embed src="/pdf/{{this.id}}" type="application/pdf" width="100%" height="500px" /><br>
+                        <input type="hidden" name="img" value="{{this.id}}">
+                    {{else}}
+
+                <!--SE FOR DOCX-->
+
+                    {{#if (eq this.tipo 'word')}}
+                        
+                        
+                        <a href="/download/{{this.id}}"><small>{{findNome this.nome}}</small></a><br>
+                        <input type="hidden" name="img" value="{{this.id}}">
+                    {{else}}
+
+                <!--SE FOR AUDIO-->
+    
+                    {{#if (eq this.tipo 'audio')}}
+                        <audio controls>
+                            <h5>{{findNome this.nome '_'}}</h5>
+                            <source src="/audio/{{this.id}}" type="audio/mp3">
+                            Seu navegador não suporta a tag de áudio.
+                        </audio><br>
+                        <input type="hidden" name="img" value="{{this.id}}">
+                    {{else}}
+
+                    {{/if}}
+                    {{/if}}
+                    {{/if}}
+                    {{/if}}
+            {{/each}}
+
+                </div>
+            </div>
             <br>
+
+
             <p class="mt-3">Categoria:</p>
             <select name="categoria" class="form-select form-select-sm">
 
@@ -34,12 +92,20 @@
             <br>
             <button type="submit" class="btn btn-success mt-4">Editar postagem</button>
 
-            <input type="hidden" name="img" value="{{postagem.img}}">
+            
+            
+            
+            
+
         </form>
+
+        
     </div>
 </div>
 
     
+
+
 
 
 
@@ -58,4 +124,18 @@
     }
 
     atualizaSel()
+
+    document.querySelector('#exibeDocs').addEventListener('click', ()=>{
+        Splitado()
+    })
+    function Splitado(){
+        var div = document.querySelector('.documentos')
+        if(div.style.display == 'none'){
+            div.style.display = 'block';
+        }else if(div.style.display == 'block'){
+            div.style.display = 'none'
+        }
+        
+        
+    }
 </script>

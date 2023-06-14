@@ -70,7 +70,7 @@ module.exports = app => {
 
     //Rota de edição
     //middleware upload comentado para nao salvar os arquivos localmente, se quiser que salve local só descomentar
-        app.post('/postagens/edit', middleware, upload.array("file"), PostagensController.updatePost)
+        app.post('/postagens/edit', middleware, upload.array("file"),  PostagensController.updatePost)
 
     //DELETE POST
         app.post('/postagens/delete', middleware, PostagensController.deletePost)
@@ -88,4 +88,7 @@ module.exports = app => {
 
     //ROTA DE AUDIO
         app.get('/audio/:id',DocsController.renderizaAudio)
+
+    //ATUALIZAR DOCUMENTO SOLO
+        app.post('/docSolo/:id', DocsController.deleteDoc)
 }

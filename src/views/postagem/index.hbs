@@ -16,13 +16,14 @@
     <!--SE FOR IMAGEM-->
             
             {{#if (eq this.tipo 'img') }}
+                <h5>{{findNome this.nome '_'}}</h5>
                 <img src="/imagem/{{this.id}}" style="width: 100px;"><br>
             {{else}}
 
     <!--SE FOR PDF-->
 
             {{#if (eq this.tipo 'pdf')}}
-                
+                <h5>{{findNome this.nome '_'}}</h5>
                 <embed src="/pdf/{{this.id}}" type="application/pdf" width="100%" height="500px" /><br>
             {{else}}
 
@@ -30,15 +31,15 @@
 
             {{#if (eq this.tipo 'word')}}
                 
-
-                <a href="/download/{{this.id}}"><small>{{this.nome}}</small></a><br>
+                
+                <a href="/download/{{this.id}}"><small>{{findNome this.nome}}</small></a><br>
             {{else}}
 
     <!--SE FOR AUDIO-->
     
             {{#if (eq this.tipo 'audio')}}
                 <audio controls>
-                    <h3>{{this.nome}}</h3>
+                    <h5>{{findNome this.nome '_'}}</h5>
                     <source src="/audio/{{this.id}}" type="audio/mp3">
                     Seu navegador não suporta a tag de áudio.
                 </audio><br>
