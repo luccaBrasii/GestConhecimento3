@@ -89,6 +89,5 @@ module.exports = app => {
     //ROTA DE AUDIO
         app.get('/audio/:id',DocsController.renderizaAudio)
 
-    //ATUALIZAR DOCUMENTO SOLO
-        app.post('/docSolo/:id', DocsController.deleteDoc)
+    
 }

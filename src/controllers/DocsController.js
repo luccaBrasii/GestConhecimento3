@@ -1,5 +1,7 @@
 //CARREGANDO SCHEMA
     const Documentos = require('../models/Documentos')
+    const Postagens = require('../models/Postagens')
+    const DocsExcluidos = require('../models/DocsExcluidos')
 //MODULOS
     const fs = require('fs')
     const path = require("path");
@@ -119,32 +121,54 @@ class DocsController{
         }
 
     //RENDERIZA AUDIO
-      static async renderizaAudio(req, res) {
-        const audioID = req.params.id;
-      
-        Documentos.findById(audioID, (err, documento) => {
-          if (err) {
-            console.error('Erro ao buscar o áudio:', err);
-            res.status(500).send('Erro ao buscar o áudio');
-          } else if (!documento) {
-            res.status(404).send('Áudio não encontrado');
-          } else {
-            res.set('Content-Type', 'audio/mp3');
-            res.send(documento.dados);
+        static async renderizaAudio(req, res) {
+          const audioID = req.params.id;
+        
+          Documentos.findById(audioID, (err, documento) => {
+            if (err) {
+              console.error('Erro ao buscar o áudio:', err);
+              res.status(500).send('Erro ao buscar o áudio');
+            } else if (!documento) {
+              res.status(404).send('Áudio não encontrado');
+            } else {
+              res.set('Content-Type', 'audio/mp3');
+              res.send(documento.dados);
+            }
+          });
           }
-        });
-        }
+    
+    //DELETAR OS DOCUMENTOS 
+          static async remanejaDoc(parametros){
+            Documentos.findOneAndRemove({ _id: parametros}).then((documento)=>{
+              if (documento) {
+                const idRemover = documento._id;
+          
+                
+                  const novoDocumento = new DocsExcluidos({
+                    nome: documento.nome,
+                    tipo: documento.tipo,
+                    dados: documento.dados,
+                  });
+          
+                  novoDocumento
+                    .save()
+                    .then(() => {
+                      console.log('DOC REMANEJADO COM SUCESSO');
+                      Postagens.updateMany(
+                        { img: idRemover },
+                        { $pull: { img: idRemover } }
+                      )
+                    })
+                    .catch((err) => {
+                      console.log('erro: ' + err);
+                    });
+                
+            }else {
+              console.log('Documento não encontrado na coleção de origem');
+            }
+        })
 
-      static async deleteDoc(req,res){
-        await Documentos.findOneAndRemove({ _id: req.params.id }).then(() => {
-          req.flash("success_msg", "Post apagado com sucesso!");
-          res.redirect('/')
-          }).catch((err)=>{
-            console.log('ERRO: '+ err);
-          })
-        }
-
-
+      }
 }
     
     

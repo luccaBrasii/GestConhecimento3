@@ -70,3 +70,11 @@
      e nos layouts..
 
      obs: comecei a trabalhar no deletar documentos especificos
+
+-----------------------------
+15/06
+    -Criei uma nova tabela 'DocsExcluidos' que é para onde vão os arquivos 'excluidos' pelo admn.
+    -Mudanças no: updatePost do PostagensController, correção de bugs, 
+    -Novo método criado: remanejaDoc no DocsController para mandar os arquivos 'excluidos' da tabela post para a tabela DocsExcluidos.
+
+    obs: consertar bugs: remanejaDoc não esta apagando o ID dos documentos de Postagens. Word não está sendo renderizado no Handlebars mesmo com o tipo=word.
