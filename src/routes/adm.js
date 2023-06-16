@@ -100,4 +100,7 @@ module.exports = app => {
 
     //ROTA DE DOWNLOAD DOS VIDEOS
         app.get('/videos/download/:id', DocsController.downloadVideo)
+
+    //ROTA DE DOWNLOAD DOS ARQUIVOS .ZIP
+        app.get('/download/zip/:id', DocsController.downloadZIP)
 }

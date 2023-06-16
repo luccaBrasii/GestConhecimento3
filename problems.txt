@@ -82,8 +82,8 @@
 -----------------------------
 16/05
     -BUG do remanejaDOC e do Word corrigidos com sucesso
-    -Adicionei Excel para upload de arquivos..
-    -Adicionei Txt para upload..
-    -Adicionei videos mp3, mp4 etc para upload..
-
-    obs: adicionar videos, e .zip..
+    -Adicionei Excel para upload de arquivos e uma rota para o usuario fazer download.
+    -Adicionei Txt para upload e uma rota para o usuario fazer download.
+    -Adicionei videos mp3, mp4 etc para upload e uma rota para o usuario fazer download.
+    -Adicionei arquivos .zip e .rar para upload e uma rota para o usuario fazer download.
+-----------------------------

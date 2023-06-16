@@ -59,7 +59,10 @@ class DocsController{
             ) {
               filePath = path.join(__dirname, '../public/upload/videos', name);
               tipo = 'video';
-            }
+            }else if (fileExtension === '.zip') {
+              filePath = path.join(__dirname, '../public/upload/zip', name);
+              tipo = 'zip';
+            }            
             else {
               filePath = path.join(__dirname, '../public/upload/other', name);
               tipo = 'outros';
@@ -264,6 +267,28 @@ class DocsController{
         res.status(500).send('Erro ao baixar o vídeo');
       }
     }
+
+    //DOWNLOADS .ZIP
+    static async downloadZIP(req, res) {
+      try {
+        const videoID = req.params.id;
+        const documento = await Documentos.findById(videoID);
+    
+        if (!documento) {
+          return res.status(404).send('Vídeo não encontrado');
+        }
+    
+        const fileData = documento.dados;
+    
+        res.setHeader('Content-Type', 'application/zip');
+        res.setHeader('Content-Disposition', `attachment; filename="${documento.nome}.zip"`);
+        res.send(fileData);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Erro ao baixar o vídeo');
+      }
+    }
+    
     
 }
     

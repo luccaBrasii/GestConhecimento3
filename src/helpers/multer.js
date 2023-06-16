@@ -10,9 +10,10 @@ const audioDirectory = path.join(uploadDirectory, "audio");
 const excelDirectory = path.join(uploadDirectory, "excel");
 const textDirectory = path.join(uploadDirectory, "text");
 const videosDirectory = path.join(uploadDirectory, "videos");
+const zipDirectory = path.join(uploadDirectory, "zip");
 const otherDirectory = path.join(uploadDirectory, "other");
 
-const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory, audioDirectory,excelDirectory,textDirectory,videosDirectory, otherDirectory]
+const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory, audioDirectory,excelDirectory,textDirectory,videosDirectory,zipDirectory, otherDirectory]
 
 // Verifica se os diretórios existem e cria-os, se necessário
   fs.existsSync(uploadDirectory) || fs.mkdirSync(uploadDirectory);
@@ -23,6 +24,7 @@ const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory
   fs.existsSync(excelDirectory) || fs.mkdirSync(excelDirectory);
   fs.existsSync(textDirectory) || fs.mkdirSync(textDirectory);
   fs.existsSync(videosDirectory) || fs.mkdirSync(videosDirectory);
+  fs.existsSync(zipDirectory) || fs.mkdirSync(zipDirectory);
   fs.existsSync(otherDirectory) || fs.mkdirSync(otherDirectory);
 
 
@@ -49,7 +51,11 @@ const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory
         folder = "text";
       }else if (file.mimetype.startsWith("video/")) {
         folder = "videos";
+      }else if (file.mimetype === "application/zip" || file.mimetype === "application/octet-stream" || file.mimetype === "application/x-zip-compressed" || file.mimetype === "amultipart/x-zip" || file.mimetype === "application/zip" ||
+                file.mimetype === "application/vnd.rar" || file.mimetype === "application/x-rar-compressed" || file.mimetype === "application/octet-stream") {
+        folder = "zip";
       }
+      
        else {
         folder = "other";
       }

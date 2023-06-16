@@ -62,8 +62,9 @@
                 
             {{else}}
 
+    <!--VIDEO-->  
             {{#if (eq this.tipo 'video')}}
-            
+        
             <a href="/videos/download/{{this.id}}"><h5>{{findNome this.nome '_'}}:</h5></a>
                 <video controls style="width: 90%;">
                 
@@ -71,8 +72,17 @@
                 Seu navegador não suporta a tag de vídeo.
             </video><br>
             {{else}}
+
+    <!--ZIP--> 
+            {{#if (eq this.tipo 'zip')}}
+                <small>Arquivo ZIP:</small>
+                
+                <a href="/download/zip/{{this.id}}"><h5>{{findNome this.nome '_'}}</h5></a>
+            <br>
+            {{else}}
             
 
+            {{/if}}
             {{/if}}
             {{/if}}
             {{/if}}
