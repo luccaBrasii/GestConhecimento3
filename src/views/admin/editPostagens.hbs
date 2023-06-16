@@ -64,8 +64,15 @@
                     <!--SE FOR DOCX-->
 
                     {{#if (eq this.tipo 'word')}}
-
                     <h2>WORD</h2>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{this.id}}" id="flexCheckDefault" name="checkbox[]">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Deletar Documento
+                        </label>
+                    </div>
+
+                    
                     <a href="/download/{{this.id}}"><small>{{findNome this.nome}}</small></a><br>
                     <input type="hidden" name="img" value="{{this.id}}">
                     {{else}}
@@ -73,6 +80,12 @@
                     <!--SE FOR AUDIO-->
 
                     {{#if (eq this.tipo 'audio')}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{this.id}}" id="flexCheckDefault" name="checkbox[]">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Deletar Documento
+                        </label>
+                    </div>
                     <audio controls>
                         <h5>{{findNome this.nome '_'}}</h5>
                         <source src="/audio/{{this.id}}" type="audio/mp3">

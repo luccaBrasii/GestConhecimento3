@@ -78,3 +78,7 @@
     -Novo método criado: remanejaDoc no DocsController para mandar os arquivos 'excluidos' da tabela post para a tabela DocsExcluidos.
 
     obs: consertar bugs: remanejaDoc não esta apagando o ID dos documentos de Postagens. Word não está sendo renderizado no Handlebars mesmo com o tipo=word.
+
+-----------------------------
+16/05
+    -BUG do remanejaDOC corrigido com sucesso

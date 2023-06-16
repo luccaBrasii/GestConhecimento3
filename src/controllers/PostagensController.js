@@ -144,7 +144,7 @@ class PostagensController {
             if (checkboxes && checkboxes.length > 0) {
                 console.log('Pelo menos uma checkbox foi marcada');
                 for (let i = 0; i < checkboxes.length; i++) {
-                     remanejaDoc(checkboxes[i])
+                    await DocsController.remanejaDoc(checkboxes[i])
                 }
             }
 

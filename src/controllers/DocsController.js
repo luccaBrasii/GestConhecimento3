@@ -139,7 +139,7 @@ class DocsController{
     
     //DELETAR OS DOCUMENTOS 
           static async remanejaDoc(parametros){
-            Documentos.findOneAndRemove({ _id: parametros}).then((documento)=>{
+            Documentos.findOneAndDelete({ _id: parametros}).then(async (documento)=>{
               if (documento) {
                 const idRemover = documento._id;
           
@@ -150,19 +150,15 @@ class DocsController{
                     dados: documento.dados,
                   });
           
-                  novoDocumento
-                    .save()
-                    .then(() => {
-                      console.log('DOC REMANEJADO COM SUCESSO');
-                      Postagens.updateMany(
+                  await novoDocumento.save()
+                    
+                  console.log('DOC REMANEJADO COM SUCESSO');
+
+                  await Postagens.updateMany(
                         { img: idRemover },
                         { $pull: { img: idRemover } }
                       )
-                    })
-                    .catch((err) => {
-                      console.log('erro: ' + err);
-                    });
-                
+
             }else {
               console.log('Documento não encontrado na coleção de origem');
             }
