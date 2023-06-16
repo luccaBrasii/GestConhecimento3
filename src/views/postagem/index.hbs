@@ -31,8 +31,9 @@
 
             {{#if (eq this.tipo 'word')}}
                 
-                
-                <a href="/download/{{this.id}}"><small>{{findNome this.nome}}</small></a><br>
+                <h2>WORD</h2>
+                <a href="/download/{{this.id}}">{{findNome this.nome '_'}}</a>
+
             {{else}}
 
     <!--SE FOR AUDIO-->
@@ -45,8 +46,13 @@
                 </audio><br>
             {{else}}
 
+    <!--SE FOR EXCEL-->
+            {{#if (eq this.tipo 'excel')}}
+                <h2>EXCEL</h2>
+                <a href="/download/excel/{{this.id}}">{{findNome this.nome '_'}}</a>
+            {{else}}
 
-
+            {{/if}}
             {{/if}}
             {{/if}}
             {{/if}}

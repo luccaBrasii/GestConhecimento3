@@ -28,6 +28,13 @@ class DocsController{
               filePath = path.join(__dirname, '../public/upload/images', name);
               tipo = 'img';
             }else if (
+              fileExtension === '.xls' ||
+              fileExtension === '.xlsx' ||
+              fileExtension === '.csv'
+            ) {
+              filePath = path.join(__dirname, '../public/upload/excel', name);
+              tipo = 'excel';
+            }else if (
               fileExtension === '.doc' ||
               fileExtension === '.docx'
             ) {
@@ -165,6 +172,28 @@ class DocsController{
         })
 
       }
+
+    //ROTA DOWNLOAD EXCEL
+          static async downloadEXCEL(req,res){
+            try {
+              const id = req.params.id;
+              const documento = await Documentos.findById(id);
+            
+              if (!documento) {
+                return res.status(404).send('Documento não encontrado');
+              }
+            
+              const fileData = documento.dados;
+            
+              res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+              res.setHeader('Content-Disposition', `attachment; filename="${documento.nome}"`);
+              res.send(fileData);
+            } catch (err) {
+              console.error(err);
+              res.status(500).send('Erro ao baixar o arquivo');
+            }
+            
+          }
 }
     
     

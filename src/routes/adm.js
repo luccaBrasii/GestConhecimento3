@@ -89,5 +89,8 @@ module.exports = app => {
     //ROTA DE AUDIO
         app.get('/audio/:id',DocsController.renderizaAudio)
 
+    //RORA DE DOWNLOAD EXCEL
+        app.get('/download/excel/:id', DocsController.downloadEXCEL)
+
     
 }

@@ -81,4 +81,5 @@
 
 -----------------------------
 16/05
-    -BUG do remanejaDOC corrigido com sucesso
+    -BUG do remanejaDOC e do Word corrigidos com sucesso
+    -Adicionei Excel para upload de arquivos..

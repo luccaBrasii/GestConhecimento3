@@ -73,7 +73,7 @@
                     </div>
 
                     
-                    <a href="/download/{{this.id}}"><small>{{findNome this.nome}}</small></a><br>
+                    <a href="/download/{{this.id}}"><small>{{findNome this.nome '_'}}</small></a><br>
                     <input type="hidden" name="img" value="{{this.id}}">
                     {{else}}
 
@@ -93,7 +93,20 @@
                     </audio><br>
                     <input type="hidden" name="img" value="{{this.id}}">
                     {{else}}
+                    
 
+                    {{#if (eq this.tipo 'excel')}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{this.id}}" id="flexCheckDefault" name="checkbox[]">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Deletar Documento
+                        </label>
+                    </div>
+                        <h2>EXCEL</h2>
+                        <a href="/download/excel/{{this.id}}">{{findNome this.nome '_'}}</a>
+                    {{else}}
+
+                    {{/if}}
                     {{/if}}
                     {{/if}}
                     {{/if}}

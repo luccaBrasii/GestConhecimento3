@@ -7,9 +7,10 @@ const imageDirectory = path.join(uploadDirectory, "images");
 const pdfDirectory = path.join(uploadDirectory, "pdf");
 const wordDirectory = path.join(uploadDirectory, "word");
 const audioDirectory = path.join(uploadDirectory, "audio");
+const excelDirectory = path.join(uploadDirectory, "excel");
 const otherDirectory = path.join(uploadDirectory, "other");
 
-const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory, audioDirectory, otherDirectory]
+const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory, audioDirectory,excelDirectory, otherDirectory]
 
 // Verifica se os diretórios existem e cria-os, se necessário
   fs.existsSync(uploadDirectory) || fs.mkdirSync(uploadDirectory);
@@ -17,6 +18,7 @@ const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory
   fs.existsSync(pdfDirectory) || fs.mkdirSync(pdfDirectory);
   fs.existsSync(wordDirectory) || fs.mkdirSync(wordDirectory);
   fs.existsSync(audioDirectory) || fs.mkdirSync(audioDirectory);
+  fs.existsSync(excelDirectory) || fs.mkdirSync(excelDirectory);
   fs.existsSync(otherDirectory) || fs.mkdirSync(otherDirectory);
 
 
@@ -37,6 +39,8 @@ const diretorios = [uploadDirectory, imageDirectory, pdfDirectory, wordDirectory
         folder = "word";
       }else if (file.mimetype.startsWith("audio/")){
         folder = "audio";
+      }else if (file.mimetype === "application/vnd.ms-excel" || file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+        folder = "excel";
       }
        else {
         folder = "other";
