@@ -52,6 +52,13 @@ class DocsController{
             ) {
               filePath = path.join(__dirname, '../public/upload/text', name);
               tipo = 'texto';
+            }else if (
+              fileExtension === '.mp4' ||
+              fileExtension === '.avi' ||
+              fileExtension === '.mkv'
+            ) {
+              filePath = path.join(__dirname, '../public/upload/videos', name);
+              tipo = 'video';
             }
             else {
               filePath = path.join(__dirname, '../public/upload/other', name);
@@ -151,7 +158,7 @@ class DocsController{
           }
     
     //DELETAR OS DOCUMENTOS 
-          static async remanejaDoc(parametros){
+      static async remanejaDoc(parametros){
             Documentos.findOneAndDelete({ _id: parametros}).then(async (documento)=>{
               if (documento) {
                 const idRemover = documento._id;
@@ -180,7 +187,7 @@ class DocsController{
       }
 
     //ROTA DOWNLOAD EXCEL
-          static async downloadEXCEL(req,res){
+      static async downloadEXCEL(req,res){
             try {
               const id = req.params.id;
               const documento = await Documentos.findById(id);
@@ -199,7 +206,7 @@ class DocsController{
               res.status(500).send('Erro ao baixar o arquivo');
             }
             
-          }
+      }
     //ROTA DOWNLOAD TXT
       static async downloadTXT(req, res) {
         try {
@@ -220,6 +227,43 @@ class DocsController{
           res.status(500).send('Erro ao baixar o arquivo');
         }
       }
+    //RENDERIZAR VIDEOS
+    static async renderizaVideo(req, res) {
+      const videoID = req.params.id;
+    
+      Documentos.findById(videoID, (err, documento) => {
+        if (err) {
+          console.error('Erro ao buscar o vídeo:', err);
+          res.status(500).send('Erro ao buscar o vídeo');
+        } else if (!documento) {
+          res.status(404).send('Vídeo não encontrado');
+        } else {
+          res.set('Content-Type', 'video/mp4');
+          res.send(documento.dados);
+        }
+      });
+    }
+    
+    //DOWNLOAD VIDEOS
+    static async downloadVideo(req, res) {
+      try {
+        const videoID = req.params.id;
+        const documento = await Documentos.findById(videoID);
+      
+        if (!documento) {
+          return res.status(404).send('Vídeo não encontrado');
+        }
+      
+        const fileData = documento.dados;
+      
+        res.setHeader('Content-Type', 'video/mp4');
+        res.setHeader('Content-Disposition', `attachment; filename="${documento.nome}.mp4"`);
+        res.send(fileData);
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Erro ao baixar o vídeo');
+      }
+    }
     
 }
     

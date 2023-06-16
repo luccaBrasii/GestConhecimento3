@@ -94,6 +94,10 @@ module.exports = app => {
     
     //ROTA DE DOWNLOAD TXT
         app.get('/download/txt/:id', DocsController.downloadTXT)
-
     
+    //ROTA PARA RENDERIZAR O VIDEO
+        app.get('/video/:id', DocsController.renderizaVideo)
+
+    //ROTA DE DOWNLOAD DOS VIDEOS
+        app.get('/videos/download/:id', DocsController.downloadVideo)
 }

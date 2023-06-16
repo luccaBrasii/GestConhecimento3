@@ -62,6 +62,18 @@
                 
             {{else}}
 
+            {{#if (eq this.tipo 'video')}}
+            
+            <a href="/videos/download/{{this.id}}"><h5>{{findNome this.nome '_'}}:</h5></a>
+                <video controls style="width: 90%;">
+                
+                <source src="/video/{{this.id}}" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+            </video><br>
+            {{else}}
+            
+
+            {{/if}}
             {{/if}}
             {{/if}}
             {{/if}}
