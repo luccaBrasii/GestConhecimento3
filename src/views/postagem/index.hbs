@@ -51,7 +51,18 @@
                 <h2>EXCEL</h2>
                 <a href="/download/excel/{{this.id}}">{{findNome this.nome '_'}}</a>
             {{else}}
+  <!--txt-->  
+            {{#if (eq this.tipo 'texto')}}
+                <h5>Arquivo de texto: <a href="/download/txt/{{this.id}}">{{findNome this.nome '_'}}</a></h5>
+                <h5>{{findNome this.nome '_'}}:</h5>
+                <pre style="border: 1px solid black;">
+                    
+                    {{this.dados}}
+                </pre>
+                
+            {{else}}
 
+            {{/if}}
             {{/if}}
             {{/if}}
             {{/if}}

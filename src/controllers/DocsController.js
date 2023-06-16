@@ -47,7 +47,13 @@ class DocsController{
             ){
               filePath = path.join(__dirname, '../public/upload/audio', name);
               tipo = 'audio';
-            }else {
+            }else if (
+              fileExtension === '.txt'
+            ) {
+              filePath = path.join(__dirname, '../public/upload/text', name);
+              tipo = 'texto';
+            }
+            else {
               filePath = path.join(__dirname, '../public/upload/other', name);
               tipo = 'outros';
             }
@@ -194,6 +200,27 @@ class DocsController{
             }
             
           }
+    //ROTA DOWNLOAD TXT
+      static async downloadTXT(req, res) {
+        try {
+          const id = req.params.id;
+          const documento = await Documentos.findById(id);
+      
+          if (!documento) {
+            return res.status(404).send('Documento não encontrado');
+          }
+      
+          const fileData = documento.dados;
+      
+          res.setHeader('Content-Type', 'text/plain');
+          res.setHeader('Content-Disposition', `attachment; filename="${documento.nome}"`);
+          res.send(fileData);
+        } catch (err) {
+          console.error(err);
+          res.status(500).send('Erro ao baixar o arquivo');
+        }
+      }
+    
 }
     
     
