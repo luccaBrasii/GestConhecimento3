@@ -5,6 +5,7 @@
 //MODULOS
     const fs = require('fs')
     const path = require("path");
+    const PDFParser = require('pdf-parse');
     
 class DocsController{
 
@@ -19,6 +20,31 @@ class DocsController{
             if (fileExtension === '.pdf') {
               filePath = path.join(__dirname, '../public/upload/pdf', name);
               tipo = 'pdf';
+
+              const img = fs.readFileSync(filePath);
+              PDFParser(img).then(data => {
+                const textoPDF = data.text;
+              
+                // Cria um novo documento com o texto extraído do PDF
+                const novoDocumento = new Documentos({
+                  nome: name,
+                  tipo: tipo,
+                  dados: img,
+                  texto: textoPDF.trim()
+                });
+          
+              novoDocumento
+                .save()
+                .then((img) => {
+                  resolve(img.id); // Resolve a Promise com o ID da imagem
+                })
+                .catch((err) => {
+                  console.log('erro: ' + err);
+                  reject(err); // Rejeita a Promise em caso de erro
+                });
+            });
+
+  
             } else if (
               fileExtension === '.jpg' ||
               fileExtension === '.jpeg' ||
@@ -69,11 +95,15 @@ class DocsController{
             }
             
             const img = fs.readFileSync(filePath);
-            const novoDocumento = new Documentos({
-              nome:name,
-              tipo: tipo,
-              dados: img 
-            });
+            
+              
+            
+              // Cria um novo documento com o texto extraído do PDF
+              const novoDocumento = new Documentos({
+                nome: name,
+                tipo: tipo,
+                dados: img
+              });
         
             novoDocumento
               .save()
@@ -84,8 +114,8 @@ class DocsController{
                 console.log('erro: ' + err);
                 reject(err); // Rejeita a Promise em caso de erro
               });
-          });
-        }
+          
+        })}
 
     //ROTA API QUE MOSTRA A IMAGEM COM BASE NO ID
         static async renderizaIMG(req, res) {
@@ -289,6 +319,33 @@ class DocsController{
       }
     }
     
+    static async buscaPalavra(req,res){
+
+      const suaPalavra = "Camila"; // Substitua "palavra" pela palavra que você está procurando
+      
+      Documentos.find({ texto: { $regex: '\\b' + suaPalavra + '\\b', $options: 'i' } }, (err, documentosEncontrados) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      
+        if (documentosEncontrados.length > 0) {
+          const nomes = []
+
+          for(let i = 0; i < documentosEncontrados.length; i++){
+            nomes.push(documentosEncontrados[i].nome)
+          }
+          
+          console.log(`A palavra "${suaPalavra}" foi encontrada em ${documentosEncontrados.length} documentos.`);
+          res.send(nomes)
+        } else {
+          console.log(`A palavra "${suaPalavra}" não foi encontrada em nenhum documento.`);
+          res.send('Documentos não encontrados')
+        }
+      });
+      
+
+    }
     
 }
     

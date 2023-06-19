@@ -87,3 +87,13 @@
     -Adicionei videos mp3, mp4 etc para upload e uma rota para o usuario fazer download.
     -Adicionei arquivos .zip e .rar para upload e uma rota para o usuario fazer download.
 -----------------------------
+-----------------------------NOVA SEMANA-----------------------------
+*19/06
+    -Modificação do 'Models' dos Documentos para add um campo de String chamado 'texto' em que vai ser armazenado o texto dos arquivos
+    -Agora quando o usuario salva um PDFs é criado um campo novo no BD, o 'texto', que é o próprio texto do arquivo.
+     Essa função foi implementada em uma condicional do método 'Salve' nos DocsController.
+    -Criação do método buscaPalavra nos DocsController para buscar a palavra inserida pelo usuario no campo
+     'texto' no banco de dados dos arquivos.
+    -Criação da Rota para o 'DocsController.buscaPalavra' em 'routes/adm.js'
+    
+    obs: renomear variaveis e deixar o código mais clean amanhã dos novos métodos criados..
