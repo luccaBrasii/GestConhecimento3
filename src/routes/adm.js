@@ -105,5 +105,5 @@ module.exports = app => {
         app.get('/download/zip/:id', DocsController.downloadZIP)
         
     //ROTA PARA BUSCAR PALAVRAS NO TEXTO DO PDF
-        app.get('/teste', DocsController.buscaPalavra)
+        app.post('/teste', DocsController.buscaPalavra)
 }

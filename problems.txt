@@ -1,5 +1,6 @@
 *PROBLEMAS:
 
+
 *05/06:
     RESOLVIDO: Implementar a função 'slv.js' em POSTAGEM CONTROLLER, para salvar a imagem no banco de dados como binário, depois jogar para uma rota de ID unico
     e então puxar a imagem para o front-end;
@@ -10,7 +11,7 @@
 
 *05/06:
     -Hoje refiz a aplicação pois não estava recebendo Imagens estáticas no Front Handlebars + express.
-
+ ~~
     -App passou a receber arquivos tipo JPG, PNG, salva localmente em 'src/public/uploads' e manda o SRC para o banco de dados..
     onde é feita a requisição pelo front-end em <img src='SRC DO BD'>;
 
@@ -97,3 +98,11 @@
     -Criação da Rota para o 'DocsController.buscaPalavra' em 'routes/adm.js'
     
     obs: renomear variaveis e deixar o código mais clean amanhã dos novos métodos criados..
+-----------------------------
+*20/06
+    -Mudanças no método buscaPalavra, agora ele recebe um parametro do front para pesquisar no banco de dados e retorna
+     se existir o nome e id do documento.
+    -Agora no Front tem uma barra de pesquisa em que tem dois tipos de pesquisa, a simples que pesquisa por enquanto por titulo
+     (depois irá pesquisar por autor, descrição etc) e a pesquisa afundo que chama o método busca palavra atraves de um fetch,
+     e então renderiza um card com o nome do documento que existe aquelas palavras pesquisadas e o link para ve-lo.
+    -Várias modificações no 'script.js' na pasta 'public/js', add funcionalidades etc..

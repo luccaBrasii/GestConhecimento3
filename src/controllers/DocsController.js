@@ -321,28 +321,25 @@ class DocsController{
     
     static async buscaPalavra(req,res){
 
-      const suaPalavra = "Camila"; // Substitua "palavra" pela palavra que você está procurando
-      
-      Documentos.find({ texto: { $regex: '\\b' + suaPalavra + '\\b', $options: 'i' } }, (err, documentosEncontrados) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-      
-        if (documentosEncontrados.length > 0) {
-          const nomes = []
+      const suaPalavra = req.body.pesquisa;
 
-          for(let i = 0; i < documentosEncontrados.length; i++){
-            nomes.push(documentosEncontrados[i].nome)
-          }
-          
-          console.log(`A palavra "${suaPalavra}" foi encontrada em ${documentosEncontrados.length} documentos.`);
-          res.send(nomes)
-        } else {
-          console.log(`A palavra "${suaPalavra}" não foi encontrada em nenhum documento.`);
-          res.send('Documentos não encontrados')
-        }
-      });
+  try {
+    const documentosEncontrados = await Documentos.find({ texto: { $regex: '\\b' + suaPalavra + '\\b', $options: 'i' } });
+
+    if (documentosEncontrados.length > 0) {
+      const nomes = documentosEncontrados.map(documento => documento.nome);
+      const ids = documentosEncontrados.map(documento => documento.id);
+
+      console.log(`A palavra "${suaPalavra}" foi encontrada em ${documentosEncontrados.length} documentos.`);
+      res.json({nomes: nomes, ids: ids}); // Envia o array de nomes como resposta JSON
+    } else {
+      console.log(`A palavra "${suaPalavra}" não foi encontrada em nenhum documento.`);
+      res.send('Documentos não encontrados');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro interno do servidor');
+  }
       
 
     }
