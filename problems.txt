@@ -106,3 +106,6 @@
      (depois irá pesquisar por autor, descrição etc) e a pesquisa afundo que chama o método busca palavra atraves de um fetch,
      e então renderiza um card com o nome do documento que existe aquelas palavras pesquisadas e o link para ve-lo.
     -Várias modificações no 'script.js' na pasta 'public/js', add funcionalidades etc..
+    -Assim como o PDF os arquivos WORD passam a ter o texto extraido e salvo no BD, as pesquisas afundo agora também funcionam neles
+
+    obs: add campo texto para schema dos arquivos excluidos..

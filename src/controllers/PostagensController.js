@@ -238,7 +238,8 @@ class PostagensController {
         const imgList = req.body.img.split(','); // Divide a lista de img em um array de IDs
 
         await Postagens.findOneAndRemove({ _id: req.body.id }).then(() => {
-            Documentos.deleteMany({ _id: { $in: imgList } }).then(() => {
+            Documentos.deleteMany({ _id: { $in: imgList } })
+            .then(() => {
                 req.flash("success_msg", "Post apagado com sucesso!");
                 res.redirect('/postagens');
             }).catch((err) => {

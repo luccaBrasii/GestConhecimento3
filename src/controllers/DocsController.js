@@ -6,7 +6,7 @@
     const fs = require('fs')
     const path = require("path");
     const PDFParser = require('pdf-parse');
-    
+    const mammoth = require('mammoth');
 class DocsController{
 
     //SALVA O DOCUMENTO NO BANCO DE DADOS
@@ -37,6 +37,7 @@ class DocsController{
                 .save()
                 .then((img) => {
                   resolve(img.id); // Resolve a Promise com o ID da imagem
+            
                 })
                 .catch((err) => {
                   console.log('erro: ' + err);
@@ -44,7 +45,8 @@ class DocsController{
                 });
             });
 
-  
+              return
+
             } else if (
               fileExtension === '.jpg' ||
               fileExtension === '.jpeg' ||
@@ -66,6 +68,41 @@ class DocsController{
             ) {
               filePath = path.join(__dirname, '../public/upload/word', name);
               tipo = 'word';
+
+              
+              // Lê o arquivo Word
+                const content = fs.readFileSync(filePath);
+
+
+                mammoth.extractRawText({ buffer: content })
+                .then(result => {
+                  const text = result.value.trim();
+
+                  // Crie um novo documento com o texto extraído do Word
+                  const novoDocumento = new Documentos({
+                    nome: name,
+                    tipo: tipo,
+                    dados: content,
+                    texto: text
+                  });
+
+                  novoDocumento
+                    .save()
+                    .then((img) => {
+                      resolve(img.id); // Resolve a Promise com o ID da imagem
+                    })
+                    .catch((err) => {
+                      console.log('erro: ' + err);
+                      reject(err); // Rejeita a Promise em caso de erro
+                    });
+
+                    
+                  })
+                .catch(error => {
+                  console.error('Erro ao extrair texto do arquivo Word:', error);
+                });
+
+                return;
             }else if (
               fileExtension === '.mp3' ||
               fileExtension === '.wav' ||
@@ -196,11 +233,12 @@ class DocsController{
               if (documento) {
                 const idRemover = documento._id;
           
-                
+                  console.log(documento)
                   const novoDocumento = new DocsExcluidos({
                     nome: documento.nome,
                     tipo: documento.tipo,
                     dados: documento.dados,
+                    texto: documento.texto
                   });
           
                   await novoDocumento.save()

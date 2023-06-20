@@ -2,7 +2,7 @@ const input = document.querySelector('#pesquisa')
 const output = document.querySelector('.outputPesquisa')
 const botao = document.querySelector('.pesquisaProfunda')
 const titulos = document.querySelectorAll('.titulo')
-const categoria = document.querySelectorAll('.categoria')
+const categoria = document.querySelectorAll('.categorizza')
 
 //BUSCA AFUNDO
     botao.addEventListener('click',async ()=>{
@@ -31,19 +31,33 @@ const categoria = document.querySelectorAll('.categoria')
         output.innerHTML = `<h5 class="card-text text-warning bg-dark">PALAVRA ENCONTRADA NESTES DOCUMENTOS:</h5>`
 
         for (let i = 0; i < nomes.length; i++) {
+            let arquivo;
+            let link;
+            let download;
+            if(nomes[i].split('.')[1] == 'docx'){
+                arquivo = 'word.png'
+                link = '/download/'
+                download = 'DOWNLOAD'
+            }else if(nomes[i].split('.')[1] == 'pdf'){
+                arquivo = 'pdf.png'
+                link = '/pdf/'
+                download = 'VER PDF'
+            }
+
             output.innerHTML +=`
             <div style=display:flex;>
             <div class="card"  style="width: 18rem, justify-content: space-around">
-                <img src="../public/img/icons/pdf.png" class="card-img-top" style=width:50px; alt="...">
+                <img src="../public/img/icons/${arquivo}" class="card-img-top" style=width:50px; alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${nomes[i].split('_')[1]}</h5>
                     <p class="card-text text-warning bg-dark">PALAVRA ENCONTRADA NESTE DOCUMENTO...</p>
-                    <a href="/pdf/${ids[i]}" class="btn btn-primary">VER PDF</a>
+                    <a href="${link}${ids[i]}" class="btn btn-primary">${download}</a>
                 </div>
             </div>
             </div>
             
             `
+            
         }
 
         
@@ -74,6 +88,7 @@ function buscaTitulo(titulos){
             if (!tituloTexto.startsWith(valor)) {
             
             const divPai = titulos[i].parentNode.parentNode; // Acessa o elemento pai da div com classe "card mt-4"
+            
             divPai.style.display = 'none'; // Oculta a div inteira
             
             } else {
