@@ -106,6 +106,57 @@
                         <a href="/download/excel/{{this.id}}">{{findNome this.nome '_'}}</a>
                     {{else}}
 
+                <!--VIDEO-->  
+                    {{#if (eq this.tipo 'video')}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{this.id}}" id="flexCheckDefault" name="checkbox[]">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Deletar Documento
+                        </label>
+                    </div>
+                
+                    <a href="/videos/download/{{this.id}}"><h5>{{findNome this.nome '_'}}:</h5></a>
+                        <video controls style="width: 90%;">
+                        
+                        <source src="/video/{{this.id}}" type="video/mp4">
+                        Seu navegador não suporta a tag de vídeo.
+                    </video><br>
+                    {{else}}
+
+                <!--ZIP--> 
+                    {{#if (eq this.tipo 'zip')}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{this.id}}" id="flexCheckDefault" name="checkbox[]">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Deletar Documento
+                        </label>
+                    </div>
+                        <small>Arquivo ZIP:</small>
+                        
+                        <a href="/download/zip/{{this.id}}"><h5>{{findNome this.nome '_'}}</h5></a>
+                    <br>
+                    {{else}}
+                    
+                    {{#if (eq this.tipo 'texto')}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{this.id}}" id="flexCheckDefault" name="checkbox[]">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Deletar Documento
+                        </label>
+                    </div>
+                        <h5>Arquivo de texto: <a href="/download/txt/{{this.id}}">{{findNome this.nome '_'}}</a></h5>
+                        <h5>{{findNome this.nome '_'}}:</h5>
+                        <pre style="border: 1px solid black;">
+                            
+                            {{this.dados}}
+                        </pre>
+                        
+                    {{else}}
+
+                    {{/if}}
+                    {{/if}}
+                    {{/if}}
+
                     {{/if}}
                     {{/if}}
                     {{/if}}

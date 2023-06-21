@@ -109,3 +109,10 @@
     -Assim como o PDF os arquivos WORD passam a ter o texto extraido e salvo no BD, as pesquisas afundo agora também funcionam neles
 
     obs: add campo texto para schema dos arquivos excluidos..
+-----------------------------
+*21/06
+    -Mudanças no PostagensController.deletePost, agora ele nao deleta mais os documentos direto do banco de dados quando o post for excluido,
+     ele muda todos os documentos para uma nova tabela, a DocsExcluidos..
+    -Correção de bugs, renderização de vários tipos de arquivos no frontend.
+
+    obs: arrumar em scripts.js o buscaTitulo() em keyup..

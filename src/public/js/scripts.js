@@ -2,7 +2,8 @@ const input = document.querySelector('#pesquisa')
 const output = document.querySelector('.outputPesquisa')
 const botao = document.querySelector('.pesquisaProfunda')
 const titulos = document.querySelectorAll('.titulo')
-const categoria = document.querySelectorAll('.categorizza')
+const descricao = document.querySelectorAll('.descricao')
+
 
 //BUSCA AFUNDO
     botao.addEventListener('click',async ()=>{
@@ -66,9 +67,14 @@ const categoria = document.querySelectorAll('.categorizza')
 
 //PESQUISA SIMPLES
     input.addEventListener('keyup', ()=>{
+        const valor = removerAcentos(input.value.toLowerCase());
+
+        setTimeout(()=>{
+           
+            buscaTitulo(valor, descricao);
+        },10)
         
-        buscaTitulo(titulos)
-        
+        buscaTitulo(valor, titulos);
         
     })
 
@@ -78,32 +84,26 @@ function removerAcentos(texto) {
       .replace(/[\u0300-\u036f]/g, '');
   }
 
-function buscaTitulo(titulos){
-    var valor = removerAcentos(input.value.toLowerCase());
+  function buscaTitulo(valor, elementos) {
+    for (let i = 0; i < elementos.length; i++) {
+        const elementoTexto = removerAcentos(elementos[i].textContent.toLowerCase());
 
-        
-        for (let i = 0; i < titulos.length; i++) {
-            const tituloTexto = removerAcentos(titulos[i].textContent.toLowerCase());
-        
-            if (!tituloTexto.startsWith(valor)) {
-            
-            const divPai = titulos[i].parentNode.parentNode; // Acessa o elemento pai da div com classe "card mt-4"
-            
+        if (!elementoTexto.startsWith(valor)) {
+            const divPai = elementos[i].parentNode.parentNode; // Acessa o elemento pai da div com classe "card mt-4"
             divPai.style.display = 'none'; // Oculta a div inteira
-            
-            } else {
-            titulos[i].style.color = 'red'
-            const divPai = titulos[i].parentNode.parentNode; // Acessa o elemento pai da div com classe "card mt-4"
+        } else {
+            elementos[i].style.color = 'red';
+            const divPai = elementos[i].parentNode.parentNode; // Acessa o elemento pai da div com classe "card mt-4"
             divPai.style.display = 'block'; // Exibe a div inteira
-            }
         }
+    }
 
-        if(valor.length == 0){
-            // Para remover a cor vermelha dos títulos que não correspondem à pesquisa
-            for (let i = 0; i < titulos.length; i++) {
-                if (titulos[i].style.color === 'red' && titulos[i].textContent.toLowerCase().startsWith(valor)) {
-                titulos[i].style.color = ''; // Redefine a cor do texto para o valor padrão
-                }
+    if (valor.length === 0) {
+        // Para remover a cor vermelha dos títulos que não correspondem à pesquisa
+        for (let i = 0; i < elementos.length; i++) {
+            if (elementos[i].style.color === 'red' && elementos[i].textContent.toLowerCase().startsWith(valor)) {
+                elementos[i].style.color = ''; // Redefine a cor do texto para o valor padrão
             }
         }
+    }
 }

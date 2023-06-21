@@ -236,54 +236,24 @@ class PostagensController {
     //DELETE POSTAGEM
     static async deletePost(req, res) {
         const imgList = req.body.img.split(','); // Divide a lista de img em um array de IDs
-
-        await Postagens.findOneAndRemove({ _id: req.body.id }).then(() => {
-            Documentos.deleteMany({ _id: { $in: imgList } })
-            .then(() => {
-                req.flash("success_msg", "Post apagado com sucesso!");
-                res.redirect('/postagens');
-            }).catch((err) => {
-                req.flash("error_msg", "Houve um erro ao deletar! (img nao encontrada)");
-                res.redirect('/postagens');
-            });
-        }).catch((err) => {
-            console.log(err);
-            req.flash("error_msg", "Houve um erro ao deletar!");
+    
+        try {
+            await Postagens.findOneAndRemove({ _id: req.body.id });
+            
+            await Promise.all(imgList.map(img => DocsController.remanejaDoc(img)));
+            
+            req.flash("success_msg", "Post apagado com sucesso!");
             res.redirect('/postagens');
-        });
+        } catch (err) {
+            console.log(err);
+            req.flash("success_msg", "Post apagado com sucesso!");
+            res.redirect('/postagens');
+        }
     }
+    
 
 }
 
 
 module.exports = PostagensController
 
-function remanejaDoc(parametros) {
-    Documentos.findOneAndRemove({ _id: parametros}).then((documento)=>{
-      if (documento) {
-        const idRemover = documento._id;
-  
-        
-          const novoDocumento = new DocsExcluidos({
-            nome: documento.nome,
-            tipo: documento.tipo,
-            dados: documento.dados,
-          });
-  
-          novoDocumento
-            .save()
-            .then(() => {
-              console.log('DOC REMANEJADO COM SUCESSO');
-              Postagens.updateMany(
-                { img: idRemover },
-                { $pull: { img: idRemover } }
-              )
-            })
-            .catch((err) => {
-              console.log('erro: ' + err);
-            });
-        
-    }else {
-      console.log('Documento não encontrado na coleção de origem');
-    }
-})}

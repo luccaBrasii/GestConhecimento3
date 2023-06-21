@@ -6,7 +6,9 @@
     const fs = require('fs')
     const path = require("path");
     const PDFParser = require('pdf-parse');
-    const mammoth = require('mammoth');
+    const mongoose = require('mongoose')
+    const mammoth = require('mammoth')
+//
 class DocsController{
 
     //SALVA O DOCUMENTO NO BANCO DE DADOS
@@ -228,34 +230,41 @@ class DocsController{
           }
     
     //DELETAR OS DOCUMENTOS 
-      static async remanejaDoc(parametros){
-            Documentos.findOneAndDelete({ _id: parametros}).then(async (documento)=>{
+    static async remanejaDoc(parametros) {
+      Documentos.findOneAndDelete({ _id: mongoose.Types.ObjectId(parametros) })
+          .then(async (documento) => {
               if (documento) {
-                const idRemover = documento._id;
-          
-                  console.log(documento)
+                  const idRemover = documento._id;
+  
                   const novoDocumento = new DocsExcluidos({
-                    nome: documento.nome,
-                    tipo: documento.tipo,
-                    dados: documento.dados,
-                    texto: documento.texto
+                      nome: documento.nome,
+                      tipo: documento.tipo,
+                      dados: documento.dados,
+                      texto: documento.texto
                   });
-          
+  
                   await novoDocumento.save()
-                    
-                  console.log('DOC REMANEJADO COM SUCESSO');
-
-                  await Postagens.updateMany(
-                        { img: idRemover },
-                        { $pull: { img: idRemover } }
-                      )
-
-            }else {
-              console.log('Documento não encontrado na coleção de origem');
-            }
-        })
-
-      }
+                      .then(async () => {
+                          await Postagens.updateMany(
+                              { img: { $in: [idRemover] } },
+                              { $pull: { img: idRemover } }
+                          )
+                              .then(() => {
+                                  console.log('DOC REMANEJADO COM SUCESSO...')
+                              })
+                              .catch((err) => {
+                                  console.log('ERRO: ' + err)
+                              });
+                      })
+                      .catch((err) => {
+                          console.log('ERRO: ' + err)
+                      });
+              } else {
+                  console.log('Documento não encontrado na coleção de origem');
+              }
+          });
+  }
+  
 
     //ROTA DOWNLOAD EXCEL
       static async downloadEXCEL(req,res){
