@@ -1,17 +1,36 @@
 <h1>{{categoria.nome}}</h1>
+
+
+
+<div class="grid text-center">
+    <div>
+        <label>PESQUISE ALGO</label>
+        <input type='text' id="pesquisa">
+        <button class="pesquisaProfunda">PESQUISA AFUNDO</button>
+    </div>
+    <div class="outputPesquisa">
+
+    </div>
+</div>
+<hr>
+
+
 {{#each postagens}}
 
 <div class="card mt-4">
     <div class="card-body">
-        <h4>{{titulo}}</h4>
-        <p> {{descricao}}</p>
+        <h4 class="titulo">{{titulo}}</h4>
+        <p class="descricao">{{descricao}}</p>
         <a href="/postagem/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
         <hr>
         <small><strong>Data:</strong> {{data}}</small><br>
-        <small><strong>Autor:</strong> {{autor}}</strong></small>
+        <strong>Autor:</strong>
+        <small class="autor"> <label>{{autor}}</label></small>
     </div>
 </div>
 {{else}}
 
 <h5>Nenhum post registrado!</h5>
 {{/each}}
+
+

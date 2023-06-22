@@ -116,3 +116,9 @@
     -Correção de bugs, renderização de vários tipos de arquivos no frontend.
 
     obs: arrumar em scripts.js o buscaTitulo() em keyup..
+-----------------------------
+*22/06
+    -Função buscaTitulo ('/public/js/script.js') agora é buscaElementos e busca pelos titulos, descrição e autor, a função verifica se a string é igual a inserida pelo usuario
+     se for ela marca em vermelho a palavra e oculta todas as divs que não a contém.. ultiliza a função startsWith() para ver se o titulo/descricao começa
+     com a palavra, mas pode ser usado o método includes() para ver se titulo/descricao contém a palavra escrita pelo usuario.. porém se usamos o 'includes()'
+     ela nos mostra até as letras, ex: se colocamos 'O' irão aparecer varias coisas na pesquisa pois varias palavras incluem a letra 'O'...

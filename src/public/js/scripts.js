@@ -3,6 +3,7 @@ const output = document.querySelector('.outputPesquisa')
 const botao = document.querySelector('.pesquisaProfunda')
 const titulos = document.querySelectorAll('.titulo')
 const descricao = document.querySelectorAll('.descricao')
+const autor = document.querySelectorAll('.autor')
 
 
 //BUSCA AFUNDO
@@ -68,42 +69,50 @@ const descricao = document.querySelectorAll('.descricao')
 //PESQUISA SIMPLES
     input.addEventListener('keyup', ()=>{
         const valor = removerAcentos(input.value.toLowerCase());
-
-        setTimeout(()=>{
-           
-            buscaTitulo(valor, descricao);
-        },10)
         
-        buscaTitulo(valor, titulos);
-        
+        buscaElementos(valor, titulos)
+        buscaElementos(valor, descricao)
+        buscaElementos(valor, autor)
+              
     })
 
 function removerAcentos(texto) {
     return texto
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s/g, '');
   }
 
-  function buscaTitulo(valor, elementos) {
+function buscaElementos(valor, elementos) {
     for (let i = 0; i < elementos.length; i++) {
         const elementoTexto = removerAcentos(elementos[i].textContent.toLowerCase());
 
+        //INVES DE STARTSWITH pode sem 'Includes()' para ver se a str contém a palvra
         if (!elementoTexto.startsWith(valor)) {
             const divPai = elementos[i].parentNode.parentNode; // Acessa o elemento pai da div com classe "card mt-4"
-            divPai.style.display = 'none'; // Oculta a div inteira
+
+            if(divPai.style.display == ''){     
+                divPai.style.display = 'none'
+            }
+           
         } else {
             elementos[i].style.color = 'red';
-            const divPai = elementos[i].parentNode.parentNode; // Acessa o elemento pai da div com classe "card mt-4"
-            divPai.style.display = 'block'; // Exibe a div inteira
+            const divPai = elementos[i].parentNode.parentNode; 
+            
+            if(divPai.style.display == '' || divPai.style.display == 'none'){
+                divPai.style.display = 'block'
+            }
+            
         }
     }
 
     if (valor.length === 0) {
         // Para remover a cor vermelha dos títulos que não correspondem à pesquisa
         for (let i = 0; i < elementos.length; i++) {
-            if (elementos[i].style.color === 'red' && elementos[i].textContent.toLowerCase().startsWith(valor)) {
+            if (elementos[i].style.color === 'red' ) {
                 elementos[i].style.color = ''; // Redefine a cor do texto para o valor padrão
             }
+            elementos[i].parentNode.parentNode.style.display = ''
         }
     }
 }
