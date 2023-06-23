@@ -122,3 +122,17 @@
      se for ela marca em vermelho a palavra e oculta todas as divs que não a contém.. ultiliza a função startsWith() para ver se o titulo/descricao começa
      com a palavra, mas pode ser usado o método includes() para ver se titulo/descricao contém a palavra escrita pelo usuario.. porém se usamos o 'includes()'
      ela nos mostra até as letras, ex: se colocamos 'O' irão aparecer varias coisas na pesquisa pois varias palavras incluem a letra 'O'...
+-----------------------------
+*23/06
+    -Atualização da aba categorias, separa os assuntos pelas categorias e encaminha o usuario para uma pagina apenas com a categoria selecionada;
+    -Criação da função 'dateFormat' ('src/helpers/helpersHandlebars') para formatar a data recebida pelo banco de dados que antes era
+     "Fri Jun 23 2023 09:22:21 GMT-0300 (Horário Padrão de Brasília)" agora no frontend fica: " 23/Jun/2023 as 09:22:21";
+    -Adicionei a função 'buscaElementos' e um input de busca dentro de Categorias e em Postagens;
+    -Organizei o código, agora o 'scripts.js' só é responsavel por detectar os eventos de pesquisa e executar as funções correspondetes,
+     as funções de pesquisa agora estão salvas em 'helpers.js' (src/public/js/helpers.js) sendo elas: desativaTextarea, innerOutput, removerAcentos, buscaElementos,
+     resetFront e buscaPalavra.
+    -Alterações na função 'buscaPalavra', agora ela mostra pro usuario no front quando não encontra o documento.. antes só aparecia no backend.
+    -Função 'buscaTitulo' agora busca também o 'conteudo' da postagem, e exibe os correspondentes.
+
+    -Arquivos suportados na aplicação:
+     pdf, jpg, jpeg, png, jfif, xls, xlsx, csv,doc, docx, mp3, wav, ogg, txt, mp4, avi, mkv, zip, rar

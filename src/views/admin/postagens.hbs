@@ -3,16 +3,31 @@
 <a href="/postagens/add"><button class="btn btn-success mt-4">Criar novo post</button></a>
 <a href="/categorias"><button class="btn btn-success mt-4">Ver Categorias</button></a>
 
-{{img}}
+<div class="grid text-center">
+    <div>
+        <label>PESQUISE ALGO</label>
+        <input type='text' class="pesquisa">
+        <button class="pesquisaProfunda">PESQUISA AFUNDO</button>
+    </div>
+    <div class="outputPesquisa">
+
+    </div>
+</div>
+<hr>
+
 {{#each postagens}}
-    {{img}}
+    
     <div class="card mt-4">
         <div class="card-body">
-            <h4>{{titulo}}</h4>
-            <p>Descrição: {{descricao}}</p>
-            <small>Data: {{data}}</small><br>
+            <div class="alertaUser"></div>
+            <h4 class="titulo">{{titulo}}</h4>
+            <p class="descricao">{{descricao}}</p>
+            <hr>
+            <textarea class="conteudo" style="display: none;">{{conteudo}}</textarea>
+            <small><strong>Data:</strong> {{dateFormat data}}</small><br>
             <small><strong>Categoria:</strong> {{categoria.nome}}</small><br>
-            <small>Autor: <strong>{{autor}}</strong></small><br>
+            <strong>Autor:</strong>
+            <small class="autor"> <label>{{autor}}</label></small><br>
             <a href="/postagens/edit/{{_id}}"><button class="btn btn-success mt-3">Editar Postagem</button></a>
             <form action="/postagens/delete" method="post">
                 <input type="hidden" name="id" value="{{_id}}">
@@ -21,7 +36,12 @@
             </form>
         </div>
     </div>
+
+
     {{else}}
 
         <h4>Nenhum post registrado!</h4>
 {{/each}}
+
+
+<script type="module" src="../public/js/scripts.js"></script>

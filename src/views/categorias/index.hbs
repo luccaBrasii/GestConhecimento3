@@ -1,13 +1,29 @@
 <h3>Categorias:</h3>
-{{#each categorias}}
-<div class="card">
 
-    <div class="card-body">
-        <a href="/lista/categorias/post/{{slug}}">
-            <h5>{{nome}}</h5>
-        </a>
+
+
+<div class="row">
+
+    {{#each categorias}}
+
+    <div class="col-sm-3">
+
+
+    
+    <a href="/lista/categorias/post/{{slug}}">
+    
+    <div>
+        <h5 >{{nome}}</h5>
+        <img src="../../public/img/icons/folder.png" class="card-img-top img-fluid" style="width: 200px;" alt="{{nome}}">
     </div>
-</div>
+    
+    </a>
+
+
+  </div>
+
 {{else}}
 
 {{/each}}
+  
+</div>

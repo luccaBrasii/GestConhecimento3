@@ -5,8 +5,8 @@
 <div class="grid text-center">
     <div>
         <label>PESQUISE ALGO</label>
-        <input type='text' id="pesquisa">
-        <button class="pesquisaProfunda">PESQUISA AFUNDO</button>
+        <input type='text' class="pesquisa">
+        <button class="pesquisaProfunda">PESQUISAR EM DOCUMENTOS</button>
     </div>
     <div class="outputPesquisa">
 
@@ -19,11 +19,13 @@
 
 <div class="card mt-4">
     <div class="card-body">
+        <div class="alertaUser"></div>
         <h4 class="titulo">{{titulo}}</h4>
         <p class="descricao">{{descricao}}</p>
         <a href="/postagem/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
         <hr>
-        <small><strong>Data:</strong> {{data}}</small><br>
+        <textarea class="conteudo" style="display: none;">{{conteudo}}</textarea>
+        <small><strong>Data:</strong> {{dateFormat data}}</small><br>
         <strong>Autor:</strong>
         <small class="autor"> <label>{{autor}}</label></small>
     </div>
@@ -34,3 +36,4 @@
 {{/each}}
 
 
+<script type="module" src="/public/js/scripts.js"></script>

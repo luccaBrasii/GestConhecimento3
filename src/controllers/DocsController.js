@@ -102,6 +102,7 @@ class DocsController{
                   })
                 .catch(error => {
                   console.error('Erro ao extrair texto do arquivo Word:', error);
+                  
                 });
 
                 return;
@@ -227,10 +228,10 @@ class DocsController{
               res.send(documento.dados);
             }
           });
-          }
+        }
     
     //DELETAR OS DOCUMENTOS 
-    static async remanejaDoc(parametros) {
+        static async remanejaDoc(parametros) {
       Documentos.findOneAndDelete({ _id: mongoose.Types.ObjectId(parametros) })
           .then(async (documento) => {
               if (documento) {
@@ -263,11 +264,10 @@ class DocsController{
                   console.log('Documento não encontrado na coleção de origem');
               }
           });
-  }
+        }
   
-
     //ROTA DOWNLOAD EXCEL
-      static async downloadEXCEL(req,res){
+        static async downloadEXCEL(req,res){
             try {
               const id = req.params.id;
               const documento = await Documentos.findById(id);
@@ -286,9 +286,10 @@ class DocsController{
               res.status(500).send('Erro ao baixar o arquivo');
             }
             
-      }
+        }
+
     //ROTA DOWNLOAD TXT
-      static async downloadTXT(req, res) {
+        static async downloadTXT(req, res) {
         try {
           const id = req.params.id;
           const documento = await Documentos.findById(id);
@@ -306,9 +307,10 @@ class DocsController{
           console.error(err);
           res.status(500).send('Erro ao baixar o arquivo');
         }
-      }
+        }
+
     //RENDERIZAR VIDEOS
-    static async renderizaVideo(req, res) {
+        static async renderizaVideo(req, res) {
       const videoID = req.params.id;
     
       Documentos.findById(videoID, (err, documento) => {
@@ -322,74 +324,74 @@ class DocsController{
           res.send(documento.dados);
         }
       });
-    }
+        }
     
     //DOWNLOAD VIDEOS
-    static async downloadVideo(req, res) {
-      try {
-        const videoID = req.params.id;
-        const documento = await Documentos.findById(videoID);
-      
-        if (!documento) {
-          return res.status(404).send('Vídeo não encontrado');
+        static async downloadVideo(req, res) {
+          try {
+            const videoID = req.params.id;
+            const documento = await Documentos.findById(videoID);
+          
+            if (!documento) {
+              return res.status(404).send('Vídeo não encontrado');
+            }
+          
+            const fileData = documento.dados;
+          
+            res.setHeader('Content-Type', 'video/mp4');
+            res.setHeader('Content-Disposition', `attachment; filename="${documento.nome}.mp4"`);
+            res.send(fileData);
+          } catch (err) {
+            console.error(err);
+            res.status(500).send('Erro ao baixar o vídeo');
+          }
         }
-      
-        const fileData = documento.dados;
-      
-        res.setHeader('Content-Type', 'video/mp4');
-        res.setHeader('Content-Disposition', `attachment; filename="${documento.nome}.mp4"`);
-        res.send(fileData);
-      } catch (err) {
-        console.error(err);
-        res.status(500).send('Erro ao baixar o vídeo');
-      }
-    }
 
     //DOWNLOADS .ZIP
-    static async downloadZIP(req, res) {
-      try {
-        const videoID = req.params.id;
-        const documento = await Documentos.findById(videoID);
-    
-        if (!documento) {
-          return res.status(404).send('Vídeo não encontrado');
+        static async downloadZIP(req, res) {
+          try {
+            const videoID = req.params.id;
+            const documento = await Documentos.findById(videoID);
+        
+            if (!documento) {
+              return res.status(404).send('Vídeo não encontrado');
+            }
+        
+            const fileData = documento.dados;
+        
+            res.setHeader('Content-Type', 'application/zip');
+            res.setHeader('Content-Disposition', `attachment; filename="${documento.nome}.zip"`);
+            res.send(fileData);
+          } catch (err) {
+            console.error(err);
+            res.status(500).send('Erro ao baixar o vídeo');
+          }
         }
-    
-        const fileData = documento.dados;
-    
-        res.setHeader('Content-Type', 'application/zip');
-        res.setHeader('Content-Disposition', `attachment; filename="${documento.nome}.zip"`);
-        res.send(fileData);
-      } catch (err) {
-        console.error(err);
-        res.status(500).send('Erro ao baixar o vídeo');
+    //PROCURA AS PALAVRAS NOS DOCUMENTOS PDF E WORD...
+      static async buscaPalavra(req,res){
+
+        const suaPalavra = req.body.pesquisa;
+
+    try {
+      const documentosEncontrados = await Documentos.find({ texto: { $regex: '\\b' + suaPalavra + '\\b', $options: 'i' } });
+
+      if (documentosEncontrados.length > 0) {
+        const nomes = documentosEncontrados.map(documento => documento.nome);
+        const ids = documentosEncontrados.map(documento => documento.id);
+
+        console.log(`A palavra "${suaPalavra}" foi encontrada em ${documentosEncontrados.length} documentos.`);
+        res.json({nomes: nomes, ids: ids}); // Envia o array de nomes como resposta JSON
+      } else {
+        console.log(`A palavra "${suaPalavra}" não foi encontrada em nenhum documento.`);
+        res.json({erro: 'Documentos não encontrados'});
       }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Erro interno do servidor');
     }
-    
-    static async buscaPalavra(req,res){
+        
 
-      const suaPalavra = req.body.pesquisa;
-
-  try {
-    const documentosEncontrados = await Documentos.find({ texto: { $regex: '\\b' + suaPalavra + '\\b', $options: 'i' } });
-
-    if (documentosEncontrados.length > 0) {
-      const nomes = documentosEncontrados.map(documento => documento.nome);
-      const ids = documentosEncontrados.map(documento => documento.id);
-
-      console.log(`A palavra "${suaPalavra}" foi encontrada em ${documentosEncontrados.length} documentos.`);
-      res.json({nomes: nomes, ids: ids}); // Envia o array de nomes como resposta JSON
-    } else {
-      console.log(`A palavra "${suaPalavra}" não foi encontrada em nenhum documento.`);
-      res.send('Documentos não encontrados');
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Erro interno do servidor');
-  }
-      
-
-    }
+      }
     
 }
     
