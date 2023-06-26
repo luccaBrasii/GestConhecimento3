@@ -9,7 +9,7 @@ const RotasController = require('../controllers/RotasController')
 const DocsController = require('../controllers/DocsController')
 
 //MIDDLEWARE
-const { middleware } = require('../helpers/middleware')
+const { middleware, eAdmin } = require('../helpers/middleware')
 const upload = require('../helpers/multer')
 
 module.exports = app => {
@@ -51,7 +51,7 @@ module.exports = app => {
         app.post('/categorias/edit/', middleware, CategoriaController.editCategoria)
 
     //Deletar a categoria
-        app.post('/categoria/delete', middleware, CategoriaController.deleteCategoria)
+        app.post('/categoria/delete', eAdmin, CategoriaController.deleteCategoria)
     //
 
     //ROTAS POSTAGENS
@@ -73,7 +73,7 @@ module.exports = app => {
         app.post('/postagens/edit', middleware, upload.array("file"),  PostagensController.updatePost)
 
     //DELETE POST
-        app.post('/postagens/delete', middleware, PostagensController.deletePost)
+        app.post('/postagens/delete', eAdmin, PostagensController.deletePost)
 
     //ROTAS DE ARQUIVOS
 

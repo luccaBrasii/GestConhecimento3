@@ -10,7 +10,7 @@ const Postagens = require('../models/Postagens')
 
         //PARA LISTAR OS POSTS NA ROTA PRINCIPAL
             static async listaPosts(req,res){
-                await Postagens.find().populate('categoria').sort({data: "desc"}).then((postagens)=>{
+                await Postagens.find().populate('categoria').sort({data: "desc"}).populate('img').then((postagens)=>{
                     res.render('index', {postagens: postagens})
                 }).catch((err)=>{
                     console.log('ERRO: '+err);
@@ -51,7 +51,7 @@ const Postagens = require('../models/Postagens')
             static async buscaPostComCategoria(req,res){
                 Categoria.findOne({slug: req.params.slug}).then((categoria)=>{
                     if(categoria){
-                        Postagens.find({categoria: categoria._id}).then((postagens)=>{
+                        Postagens.find({categoria: categoria._id}).populate('img').then((postagens)=>{
                             res.render("categorias/postagens", {postagens: postagens, categoria: categoria})
                         }).catch((err)=>{
                             console.log('ERRO: '+ err)

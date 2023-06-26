@@ -136,3 +136,14 @@
 
     -Arquivos suportados na aplicação:
      pdf, jpg, jpeg, png, jfif, xls, xlsx, csv,doc, docx, mp3, wav, ogg, txt, mp4, avi, mkv, zip, rar
+-------------------------------------------
+-----------------------------NOVA SEMANA-----------------------------
+*26/06
+    -Adicionei a função 'iconDoc' em 'src/helpers/helpersHandlebars', essa função detecta qual o tipo de arquivo tem nas postagens e retorna o 'src'
+     da imagem para renderizar no frontend e exibir um icone de acordo com os arquivos que existem nessa postagem.
+    -Agora os arquivos '.txt' também tem o texto extraido e salvo no banco de dados.. a 'pesquisa profunda' agora detecta se os docs txt contém essa palavra.
+    -Agora existem dos tipos de usuarios, os normais e os admin, o 'middleware' dos admins é chamado de 'eAdmin' e fica em (src/helpers/middleware), por enquanto
+     apenas Admins podem apagar posts e Registrar novos usuarios..
+    -Já conseguimos Registrar os usuarios via formulario do front end, existe a opção 'Esse usuario é um admin?' que se marcada envia os dados para o BD salvando
+     o usuario como admin ou usuario normal..
+-------------------------------------------

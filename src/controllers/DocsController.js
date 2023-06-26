@@ -116,8 +116,39 @@ class DocsController{
             }else if (
               fileExtension === '.txt'
             ) {
-              filePath = path.join(__dirname, '../public/upload/text', name);
-              tipo = 'texto';
+                filePath = path.join(__dirname, '../public/upload/text', name);
+                tipo = 'texto';
+
+                try {
+                  const texto = fs.readFileSync(filePath, 'utf-8');
+                  var textoExtraido = texto.trim();
+                } catch (err) {
+                  console.log('Erro ao ler o arquivo:', err);
+                  return null;
+                }
+
+                const img = fs.readFileSync(filePath);
+                const novoDocumento = new Documentos({
+                  nome: name,
+                  tipo: tipo,
+                  dados: img,
+                  texto: textoExtraido
+                });
+
+                novoDocumento
+                  .save()
+                  .then((img) => {
+                    resolve(img.id); // Resolve a Promise com o ID da imagem
+                  })
+                  .catch((err) => {
+                    console.log('erro: ' + err);
+                    reject(err); // Rejeita a Promise em caso de erro
+                  });
+
+
+              return;
+
+
             }else if (
               fileExtension === '.mp4' ||
               fileExtension === '.avi' ||
@@ -155,7 +186,8 @@ class DocsController{
                 reject(err); // Rejeita a Promise em caso de erro
               });
           
-        })}
+        })
+          }
 
     //ROTA API QUE MOSTRA A IMAGEM COM BASE NO ID
         static async renderizaIMG(req, res) {
@@ -367,6 +399,7 @@ class DocsController{
             res.status(500).send('Erro ao baixar o vídeo');
           }
         }
+        
     //PROCURA AS PALAVRAS NOS DOCUMENTOS PDF E WORD...
       static async buscaPalavra(req,res){
 

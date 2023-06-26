@@ -26,11 +26,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Login</a>
                     </li>
+                    
+                {{/if}}
+            <!--Só aparece se for admin-->
+                {{#if (eq user.eAdmin '1') }}
+                
                     <li class="nav-item">
                         <a class="nav-link" href="/Registro">Registro</a>
                     </li>
+                {{else}}
                 {{/if}}
-
         </div>
     </div>
 </nav>

@@ -25,6 +25,10 @@ const output = document.querySelector('.outputPesquisa')
                 arquivo = 'pdf.png'
                 link = '/pdf/'
                 download = 'VER PDF'
+            }else if(nomes[i].split('.')[1] == 'txt'){
+                arquivo = 'note.png'
+                link = '/download/txt/'
+                download = 'DOWNLOAD TXT'
             }
             
             output.innerHTML +=

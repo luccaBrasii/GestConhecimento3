@@ -17,7 +17,7 @@ module.exports = function(passport){
             if (verificada) {
               const usuarioSemSenha = { ...usuario.toObject() };
               delete usuarioSemSenha.senha;
-              delete usuarioSemSenha.eAdmin;
+              //delete usuarioSemSenha.eAdmin;
               return done(null, usuarioSemSenha);
             } else {
               return done(null, false, { message: "Senha incorreta" });
@@ -36,7 +36,7 @@ module.exports = function(passport){
             if (usuario) {
               const usuarioSemSenha = { ...usuario.toObject() };
               delete usuarioSemSenha.senha;
-              delete usuarioSemSenha.eAdmin;
+              //delete usuarioSemSenha.eAdmin;
               done(null, usuarioSemSenha);
             } else {
               done(null, false);

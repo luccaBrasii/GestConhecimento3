@@ -26,21 +26,33 @@
 
 {{#each postagens}}
 
-<div class="card mt-4">
-    <div class="card-body">
-        <div class="alertaUser"></div>
-        <h4 class="titulo">{{titulo}}</h4>
-        <p class="descricao">{{descricao}}</p>
-        <a href="/postagem/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
-        <hr>
-        <textarea class="conteudo" style="display: none;">{{conteudo}}</textarea>
+    <div class="card mt-4">
         
-        <small><strong>Data:</strong> {{dateFormat data}}</small><br>
-        <small><strong>Categoria:</strong> {{categoria.nome}}</small><br>
-        <strong>Autor:</strong>
-        <small class="autor"> <label>{{autor}}</label></small>
+        
+        
+        
+        <div class="card-body">
+            <div class="alertaUser"></div>
+            <h4 class="titulo">{{titulo}}</h4>
+            <p class="descricao">{{descricao}}</p>
+            <a href="/postagem/{{slug}}"><button class="btn btn-success">Leia mais</button></a>
+            
+            <hr>
+            <textarea class="conteudo" style="display: none;">{{conteudo}}</textarea>
+            
+            <small><strong>Data:</strong> {{dateFormat data}}</small><br>
+            <small><strong>Categoria:</strong> {{categoria.nome}}</small><br>
+            <strong>Autor:</strong>
+            <small class="autor"> <label>{{autor}}</label></small>
+        </div>
+
+        <div class="d-inline-flex">
+            {{#img}}
+                <img src={{iconDoc tipo}} style="width: 50px;">
+            {{/img}}
+        </div>
+
     </div>
-</div>
 {{else}}
 
 <h5>Nenhum post registrado!</h5>

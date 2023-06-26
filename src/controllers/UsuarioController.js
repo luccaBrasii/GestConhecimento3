@@ -29,6 +29,15 @@ class UsuarioController{
                 
             //SE PASSAR A VALIDAÇÃO
                 else{
+                    var eAdmin;
+
+                    if(req.body.eAdmin === 'undefined'){
+                        eAdmin = 0
+                    }else if(req.body.eAdmin == 'on'){
+                        eAdmin = 1
+                    }
+
+                    console.log(req.body.eAdmin)
                     //VERIFICA SE EXISTE O EMAIL CADASTRADO NO BD
                         Usuario.findOne({email: req.body.email}).then((usuario)=>{
                             if(usuario){
@@ -39,7 +48,8 @@ class UsuarioController{
                                     const newUsuario = new Usuario({
                                         nome: req.body.nome,
                                         email: req.body.email,
-                                        senha: req.body.senha
+                                        senha: req.body.senha,
+                                        eAdmin: eAdmin
                                     })
 
                                 //CRIPTOGRAFA A SENHA E SALVA O USUARIO
