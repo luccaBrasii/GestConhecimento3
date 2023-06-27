@@ -1,0 +1,21 @@
+<h2>PAINEL DO ADM</h2>
+
+{{#each usuarios}}
+{{this.senha}}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{this.nome}}</h5>
+            <p class="card-text">email: {{this.email}}</p>
+            
+            {{#if (eq this.eAdmin '1')}}
+                <p class="card-text">Cargo: ADM</p>
+            {{else}}
+                <p class="card-text">Cargo: USER</p>
+            {{/if}}
+            <form method="post">
+                <input type="hidden" value="{{this.id}}" name="id">
+                <button type="submit">MUDAR PERMISSÕES</button>
+            </form>
+        </div>
+    </div>
+{{/each}}

@@ -33,5 +33,13 @@
                     res.redirect('/')
                   })
             })
+
+        //PAINEL ADMIN
+            app.get('/adm',eAdmin, UsuarioController.RenderizaADM)
+
+            app.post('/adm',eAdmin, UsuarioController.MudaPermissao)
+                
+        //PAINEL FORMULARIO USUARIO    
+            app.get('/edit/user/:id', UsuarioController.RenderizaUSER)
     }
 

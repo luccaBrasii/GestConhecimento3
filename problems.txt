@@ -147,3 +147,9 @@
     -Já conseguimos Registrar os usuarios via formulario do front end, existe a opção 'Esse usuario é um admin?' que se marcada envia os dados para o BD salvando
      o usuario como admin ou usuario normal..
 -------------------------------------------
+*27/06
+    -Adicionei uma rota em 'userRoute' para o 'Admin painel' onde são renderizados todos os usuarios e podem ser alteradas as permissões
+     para usuario e administrador;
+    -Criações de 3 novos métodos em UsuarioController: RenderizaADM, RenderizaUSUARIO, MudaPermissão;
+    -Criação do front 'views/usuarios/': adm.hbs, editUser.hbs;
+    
