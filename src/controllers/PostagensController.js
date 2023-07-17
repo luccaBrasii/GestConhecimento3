@@ -1,8 +1,7 @@
 //CARREGANDO SCHEMAS
 const Categoria = require('../models/Categoria')
 const Postagens = require('../models/Postagens')
-const Documentos = require('../models/Documentos')
-const DocsExcluidos = require('../models/DocsExcluidos')
+const removerAcentos = require('../helpers/removerAcentos')
 //OUTROS CONTROLLADORES
 const DocsController = require('../controllers/DocsController')
 
@@ -46,7 +45,12 @@ class PostagensController {
 
         } else if (!req.body.conteudo || typeof req.body.conteudo === 'undefined' || req.body.conteudo === null) {
 
-            req.flash("error_msg", 'IConteúdo inválido!')
+            req.flash("error_msg", 'Conteúdo inválido!')
+            res.redirect(`/postagens/add`)
+
+        }else if (req.body.conteudo.length < 3) {
+
+            req.flash("error_msg", 'Conteúdo muito curto!')
             res.redirect(`/postagens/add`)
 
         } else if (req.body.categoria == 0) {
@@ -72,10 +76,10 @@ class PostagensController {
 
                 // Crie o objeto newPost com base nos dados enviados e adicione os IDs dos arquivos ao campo imgs
                 const newPost = {
-                    titulo: req.body.titulo,
+                    titulo: removerAcentos(req.body.titulo),
                     slug: `${Date.now()}+${req.body.titulo.trim()}`,
-                    descricao: req.body.descricao,
-                    conteudo: req.body.conteudo,
+                    descricao: removerAcentos(req.body.descricao),
+                    conteudo: removerAcentos(req.body.conteudo),
                     categoria: req.body.categoria,
                     autor: req.user.nome,
                     img: fileIds // Adicionei o array fileIds ao campo imgs
@@ -178,12 +182,11 @@ class PostagensController {
                         
                         const valores = [].concat(...imageIds);
 
-                        console.log(valores);
 
-                        postagens.titulo = req.body.titulo;
+                        postagens.titulo = removerAcentos(req.body.titulo),
                         postagens.slug = `${Date.now()}+${req.body.titulo.trim()}`;
-                        postagens.descricao = req.body.descricao;
-                        postagens.conteudo = req.body.conteudo;
+                        postagens.descricao = removerAcentos(req.body.descricao),
+                        postagens.conteudo = removerAcentos(req.body.conteudo)
                         postagens.categoria = req.body.categoria;
                         postagens.data = Date.now();
                         postagens.autor = req.user.nome;
@@ -207,10 +210,10 @@ class PostagensController {
                         res.redirect('/postagens');
                     }
                 } else {
-                    postagens.titulo = req.body.titulo;
-                    postagens.slug = `${Date.now()}+${req.body.titulo.trim()}`;
-                    postagens.descricao = req.body.descricao;
-                    postagens.conteudo = req.body.conteudo;
+                    postagens.titulo = removerAcentos(req.body.titulo)
+                    postagens.slug = `${Date.now()}+${req.body.titulo.trim()}`
+                    postagens.descricao = removerAcentos(req.body.descricao)
+                    postagens.conteudo = removerAcentos(req.body.conteudo)
                     postagens.categoria = req.body.categoria;
                     postagens.data = Date.now();
                     postagens.autor = req.user.nome;

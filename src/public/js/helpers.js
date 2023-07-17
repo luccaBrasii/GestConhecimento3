@@ -57,20 +57,28 @@ const output = document.querySelector('.outputPesquisa')
     }
 
 //Busca os elementos pelo DOM, e revela ou oculta de acordo com a pesquisa...
-    function buscaElementos(valor, elementos) {
-            
+    function buscaElementos(valor, elementos, conteudo = false) {
+        
+        var funcaoBusca;
+
+        //Se o conteudo for true, quer dizer que é pra buscar em todas as palavras do elemento e não só se a frase começa com o valor
+        if (conteudo) {
+            funcaoBusca = (elementoTexto, valor) => elementoTexto.includes(valor);
+        } else {
+            funcaoBusca = (elementoTexto, valor) => elementoTexto.startsWith(valor);
+        }
+
+
         for (let i = 0; i < elementos.length; i++) {
             const elementoTexto = removerAcentos(elementos[i].textContent.toLowerCase());
 
-            //INVES DE STARTSWITH pode sem 'Includes()' para ver se a str contém a palvra
-            if (!elementoTexto.startsWith(valor)) {
+            if (!funcaoBusca(elementoTexto, valor)) {
                 const divPai = elementos[i].parentNode.parentNode; // Acessa o elemento pai da div com classe "card mt-4"
 
                 if(divPai.style.display == ''){     
                     divPai.style.display = 'none'
                 }
                 
-            
             } else {
                 elementos[i].style.color = 'red';
                 const divPai = elementos[i].parentNode.parentNode; 
@@ -87,13 +95,11 @@ const output = document.querySelector('.outputPesquisa')
             }
         }
 
-        resetFront(valor, elementos)
-
     }
 
 //FUNÇÃO PARA RESETAR O VISUAL DO USUARIO, REVELA AS DIVS OCULTADAS E RETIRA A COR VERMELHA DAS PALAVRAS ENCONTRADAS
-    function resetFront(valor, elementos){
-        if (valor.length === 0) {
+    function resetFront(...divs){
+        divs.forEach(elementos => {
             // Para remover a cor vermelha dos títulos que não correspondem à pesquisa
             for (let i = 0; i < elementos.length; i++) {
                 if (elementos[i].style.color === 'red' ) {
@@ -110,8 +116,10 @@ const output = document.querySelector('.outputPesquisa')
             }
             //Tira os documentos revelados da tela
             output.innerHTML = ''
-        }
+        })
+        
     }
+    
 
 //BUSCA OS DOCUMENTOS PDF/WORD QUE CONTEM ESSA PALAVRA EM SEU TEXTO..
     async function buscaPalavra(valor){
@@ -146,5 +154,6 @@ export default {
     innerOutput,
     removerAcentos,
     buscaElementos,
-    buscaPalavra
+    buscaPalavra,
+    resetFront
 }

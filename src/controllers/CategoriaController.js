@@ -2,6 +2,7 @@
     const Categoria = require('../models/Categoria')
 //função verificar parametros
     const verificarParametros = require('../helpers/verificarParametros')
+    const removerAcentos = require('../helpers/removerAcentos')
 
 //CONTROLLER
     class CategoriaController {
@@ -15,24 +16,33 @@
                     
                 //Se a validação passar cria um DOC e envia ao BD
                     if(validacao){
-                        //Cria o DOC
+                        
+                        const nome = req.body.nome.toLowerCase().trim()
+                        const verificaSeExiste = await Categoria.findOne({nome: nome})
+                        
+                        if(verificaSeExiste){
+                            req.flash('error_msg','Essa categoria já existe, porfavor registre outra!')
+                            res.status(500).redirect('/categorias')
+                        }else{
+                            //Cria o DOC
                             const newCategoria = {
-                                nome: req.body.nome,
-                                slug: `${Date.now()}+${req.body.nome.trim()}`
+                                nome: removerAcentos(nome),
+                                slug: `${Date.now()}_${req.body.nome.trim()}`
                             };
                         
                         try {
                             //Salva o DOC no banco de dados
                                 await new Categoria(newCategoria).save();
-                                console.log('Cadastrado com sucesso');
                             //Armazena a mensagem na varivel flash 'success_msg'
-                                req.flash('success_msg','categoria registrada com sucesso!')
+                                req.flash('success_msg',`categoria ${nome} registrada com sucesso!`)
                                 res.status(200).redirect('/categorias')
                         }catch (err) {
                             //Armazena a mensagem na varivel flash 'error_msg'
-                                req.flash('error_msg','Houve um erro ao registrar a categoria, tente novamente!')
                                 console.log('Erro ao cadastrar!', err);
-                    }}
+                                req.flash('error_msg','Houve um erro ao registrar a categoria, tente novamente!')
+                                res.status(500).redirect('/categorias')
+                    }
+                        }}
             }
         
         //READ
@@ -40,6 +50,7 @@
                 Categoria.find().sort({date: 'desc'}).then((categorias)=>{
                     res.render('admin/categorias', {categorias: categorias})
                 }).catch((err)=>{
+                    console.log('Erro ao listar as categorias!', err);
                     req.flash("error_msg", "Houve um erro ao listar as categorias")
                     res.redirect('/categorias')
                 })
@@ -62,14 +73,15 @@
                 //Validações
                     if(!req.body.nome || typeof req.body.nome  === 'undefined' || req.body.nome  === null){
 
-                        erros.push({ texto: `${nomeParametro} inválido!` });
+                        req.flash('error_msg', 'Insira um nome válido!')
                         res.redirect(`/categorias/edit/${req.body.id}`)
 
                     }else{
+                        const nome = req.body.nome.toLowerCase().trim()
                         //Se passar pelas valçidações edita o arquivo com base no ID..
                             Categoria.findOne({_id: req.body.id}).then((categoria)=>{
 
-                                categoria.nome = req.body.nome
+                                categoria.nome = removerAcentos(nome)
                                 categoria.date = Date.now()
 
                                 categoria.save().then(()=>{

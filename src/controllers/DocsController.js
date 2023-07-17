@@ -8,6 +8,7 @@
     const PDFParser = require('pdf-parse');
     const mongoose = require('mongoose')
     const mammoth = require('mammoth')
+    const removerAcentos = require('../helpers/removerAcentos')
 //
 class DocsController{
 
@@ -25,7 +26,7 @@ class DocsController{
 
               const img = fs.readFileSync(filePath);
               PDFParser(img).then(data => {
-                const textoPDF = data.text;
+                const textoPDF = removerAcentos(data.text)
               
                 // Cria um novo documento com o texto extraído do PDF
                 const novoDocumento = new Documentos({
@@ -39,12 +40,15 @@ class DocsController{
                 .save()
                 .then((img) => {
                   resolve(img.id); // Resolve a Promise com o ID da imagem
-            
+                  
                 })
                 .catch((err) => {
                   console.log('erro: ' + err);
                   reject(err); // Rejeita a Promise em caso de erro
                 });
+            }).catch((err) => {
+              console.log('erro: ' + err);
+              reject(err); // Rejeita a Promise em caso de erro
             });
 
               return
@@ -78,8 +82,7 @@ class DocsController{
 
                 mammoth.extractRawText({ buffer: content })
                 .then(result => {
-                  const text = result.value.trim();
-
+                  const text = removerAcentos(result.value.trim())
                   // Crie um novo documento com o texto extraído do Word
                   const novoDocumento = new Documentos({
                     nome: name,
@@ -121,7 +124,7 @@ class DocsController{
 
                 try {
                   const texto = fs.readFileSync(filePath, 'utf-8');
-                  var textoExtraido = texto.trim();
+                  var textoExtraido = removerAcentos(texto.trim())
                 } catch (err) {
                   console.log('Erro ao ler o arquivo:', err);
                   return null;
@@ -187,7 +190,7 @@ class DocsController{
               });
           
         })
-          }
+        }
 
     //ROTA API QUE MOSTRA A IMAGEM COM BASE NO ID
         static async renderizaIMG(req, res) {
@@ -204,7 +207,7 @@ class DocsController{
                 res.send(imagem.dados);
               }
             });
-          }
+        }
 
     //RENDERIZA O PDF 
         static async renderizaPDF(req, res) {
@@ -264,38 +267,38 @@ class DocsController{
     
     //DELETAR OS DOCUMENTOS 
         static async remanejaDoc(parametros) {
-      Documentos.findOneAndDelete({ _id: mongoose.Types.ObjectId(parametros) })
-          .then(async (documento) => {
-              if (documento) {
-                  const idRemover = documento._id;
-  
-                  const novoDocumento = new DocsExcluidos({
-                      nome: documento.nome,
-                      tipo: documento.tipo,
-                      dados: documento.dados,
-                      texto: documento.texto
-                  });
-  
-                  await novoDocumento.save()
-                      .then(async () => {
-                          await Postagens.updateMany(
-                              { img: { $in: [idRemover] } },
-                              { $pull: { img: idRemover } }
-                          )
-                              .then(() => {
-                                  console.log('DOC REMANEJADO COM SUCESSO...')
-                              })
-                              .catch((err) => {
-                                  console.log('ERRO: ' + err)
-                              });
-                      })
-                      .catch((err) => {
-                          console.log('ERRO: ' + err)
+          Documentos.findOneAndDelete({ _id: mongoose.Types.ObjectId(parametros) })
+              .then(async (documento) => {
+                  if (documento) {
+                      const idRemover = documento._id;
+      
+                      const novoDocumento = new DocsExcluidos({
+                          nome: documento.nome,
+                          tipo: documento.tipo,
+                          dados: documento.dados,
+                          texto: documento.texto
                       });
-              } else {
-                  console.log('Documento não encontrado na coleção de origem');
-              }
-          });
+      
+                      await novoDocumento.save()
+                          .then(async () => {
+                              await Postagens.updateMany(
+                                  { img: { $in: [idRemover] } },
+                                  { $pull: { img: idRemover } }
+                              )
+                                  .then(() => {
+                                      console.log('DOC REMANEJADO COM SUCESSO...')
+                                  })
+                                  .catch((err) => {
+                                      console.log('ERRO: ' + err)
+                                  });
+                          })
+                          .catch((err) => {
+                              console.log('ERRO: ' + err)
+                          });
+                  } else {
+                      console.log('Documento não encontrado na coleção de origem');
+                  }
+              });
         }
   
     //ROTA DOWNLOAD EXCEL
@@ -343,19 +346,19 @@ class DocsController{
 
     //RENDERIZAR VIDEOS
         static async renderizaVideo(req, res) {
-      const videoID = req.params.id;
-    
-      Documentos.findById(videoID, (err, documento) => {
-        if (err) {
-          console.error('Erro ao buscar o vídeo:', err);
-          res.status(500).send('Erro ao buscar o vídeo');
-        } else if (!documento) {
-          res.status(404).send('Vídeo não encontrado');
-        } else {
-          res.set('Content-Type', 'video/mp4');
-          res.send(documento.dados);
-        }
-      });
+          const videoID = req.params.id;
+        
+          Documentos.findById(videoID, (err, documento) => {
+            if (err) {
+              console.error('Erro ao buscar o vídeo:', err);
+              res.status(500).send('Erro ao buscar o vídeo');
+            } else if (!documento) {
+              res.status(404).send('Vídeo não encontrado');
+            } else {
+              res.set('Content-Type', 'video/mp4');
+              res.send(documento.dados);
+            }
+          });
         }
     
     //DOWNLOAD VIDEOS
@@ -401,30 +404,30 @@ class DocsController{
         }
         
     //PROCURA AS PALAVRAS NOS DOCUMENTOS PDF E WORD...
-      static async buscaPalavra(req,res){
+        static async buscaPalavra(req,res){
 
-        const suaPalavra = req.body.pesquisa;
+          const suaPalavra = req.body.pesquisa;
 
-    try {
-      const documentosEncontrados = await Documentos.find({ texto: { $regex: '\\b' + suaPalavra + '\\b', $options: 'i' } });
+      try {
+        const documentosEncontrados = await Documentos.find({ texto: { $regex: '\\b' + suaPalavra + '\\b', $options: 'i' } });
 
-      if (documentosEncontrados.length > 0) {
-        const nomes = documentosEncontrados.map(documento => documento.nome);
-        const ids = documentosEncontrados.map(documento => documento.id);
+        if (documentosEncontrados.length > 0) {
+          const nomes = documentosEncontrados.map(documento => documento.nome);
+          const ids = documentosEncontrados.map(documento => documento.id);
 
-        console.log(`A palavra "${suaPalavra}" foi encontrada em ${documentosEncontrados.length} documentos.`);
-        res.json({nomes: nomes, ids: ids}); // Envia o array de nomes como resposta JSON
-      } else {
-        console.log(`A palavra "${suaPalavra}" não foi encontrada em nenhum documento.`);
-        res.json({erro: 'Documentos não encontrados'});
+          console.log(`A palavra "${suaPalavra}" foi encontrada em ${documentosEncontrados.length} documentos.`);
+          res.json({nomes: nomes, ids: ids}); // Envia o array de nomes como resposta JSON
+        } else {
+          console.log(`A palavra "${suaPalavra}" não foi encontrada em nenhum documento.`);
+          res.json({erro: 'Documentos não encontrados'});
+        }
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Erro interno do servidor');
       }
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erro interno do servidor');
-    }
-        
+          
 
-      }
+        }
     
 }
     

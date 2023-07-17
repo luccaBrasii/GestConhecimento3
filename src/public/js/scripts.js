@@ -19,16 +19,18 @@
         await helpers.buscaPalavra(valor)
     })
 
-
-
-
-
 //PESQUISA SIMPLES
     input.addEventListener('keyup', ()=>{
-        const valor = helpers.removerAcentos(input.value.toLowerCase());
         
-        helpers.buscaElementos(valor, titulos)
-        helpers.buscaElementos(valor, descricao)
-        helpers.buscaElementos(valor, autor)
-        helpers.buscaElementos(valor, conteudo)
+        const valor = helpers.removerAcentos(input.value.toLowerCase());
+
+        if(valor.length >= 3){
+            helpers.buscaElementos(valor, titulos)
+            helpers.buscaElementos(valor, descricao, true)
+            helpers.buscaElementos(valor, autor)
+            helpers.buscaElementos(valor, conteudo, true)
+        }
+        else if(valor.length < 3){
+            helpers.resetFront(titulos, descricao, autor, conteudo);
+        }
     })
