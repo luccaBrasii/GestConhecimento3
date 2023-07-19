@@ -10,12 +10,12 @@
         app.use(bodyParser.json())
 
         //ROTA PARA REGISTRO
-            app.get('/registro',eAdmin, (req,res)=>{
+            app.get('/registro', (req,res)=>{
                 res.render('usuarios/registro')
             })
 
         //CRIAR USUARIO
-            app.post('/registro',eAdmin, UsuarioController.Registro)
+            app.post('/registro', UsuarioController.Registro)
         
         //LOGIN
             //Renderiza a pag de login
