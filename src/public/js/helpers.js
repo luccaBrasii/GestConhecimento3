@@ -123,7 +123,7 @@ const output = document.querySelector('.outputPesquisa')
 
 //BUSCA OS DOCUMENTOS PDF/WORD QUE CONTEM ESSA PALAVRA EM SEU TEXTO..
     async function buscaPalavra(valor){
-        await fetch('http://localhost:3000/teste', {
+        await fetch('/teste', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
