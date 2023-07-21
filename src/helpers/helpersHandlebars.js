@@ -28,9 +28,10 @@ const Handlebars = require('handlebars')
 
     ultimaVar.push(formatada[1], formatada[0], formatada[2])
     
-    var dataFormt = String(ultimaVar).replaceAll(',','/')
-    dataFormt += ' as '+ formatada[3]
-    return dataFormt
+    var dataFormt = String(ultimaVar).replace(/,/g, '/');
+    dataFormt += ' as ' + formatada[3];
+    return dataFormt;
+
   })
 
   Handlebars.registerHelper("iconDoc", function (data){
