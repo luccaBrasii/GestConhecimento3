@@ -34,7 +34,10 @@
             partialsDir: path.join(app.get('views'), 'partials'),
             layoutsDir: path.join(app.get('views'), 'layouts'),
             extname: '.hbs',
-            helpers: require('./helpers/helpersHandlebars')
+            helpers: require('./helpers/helpersHandlebars'),
+            noEscape: true,
+            allowProtoProperties: true,
+            allowProtoMethods: true
         }));
         app.set('view engine', '.hbs');
 
