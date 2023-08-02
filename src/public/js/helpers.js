@@ -86,12 +86,14 @@ const output = document.querySelector('.outputPesquisa')
                 if(divPai.style.display == '' || divPai.style.display == 'none'){
                     divPai.style.display = 'block'
                 }
+
                 if(elementos[i].className === 'conteudo'){
                     let alertaUser = document.querySelectorAll('.alertaUser')
                     for(let i = 0; alertaUser.length > i; i++){
                         alertaUser[i].innerHTML = `<p style=color:red;>PALAVRA ENCONTRADA DENTRO DO CONTEUDO DESSA POSTAGEM</p>`
                     }
                 }
+                
             }
         }
 
